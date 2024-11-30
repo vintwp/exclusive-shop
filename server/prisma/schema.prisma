@@ -1,0 +1,136 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Store {
+  id                      Int        @id @default(autoincrement()) @map("store_id")
+  name                    String     @map("store_name")
+  url                     String     @map("store_url")
+  primaryCategories       Category[]
+  additionalCategories    StoreCategories[]
+  createdAt               DateTime   @default(now()) @map("created_at")
+  updatedAt               DateTime   @updatedAt @map("updated_at")
+}
+
+model Category {
+  id                Int      @id @default(autoincrement()) @map("category_id")
+  name              String   @map("category_name")
+  primaryStoreId    Int      @map("primary_store_id")
+  primaryStore      Store    @relation(fields: [primaryStoreId], references: [id])
+  additionalStores  StoreCategories[]
+  displayOnMainPage Boolean  @default(false) @map("display_on_main_page")
+  image             String   @map("category_image")
+  url               String   @map("category_url")
+  item              Item[]   @relation("CategoryToItem")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+}
+
+model StoreCategories {
+  storeId       Int @map("store_id")
+  categoryId    Int @map("category_id")
+  store         Store @relation(fields: [storeId], references: [id])
+  category      Category @relation(fields: [categoryId], references: [id])
+  assignedAt    DateTime @default(now()) @map("assigned_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+  @@unique([storeId, categoryId])
+}
+
+model Brand {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Item {
+  id                Int                 @id @default(autoincrement())
+  name              String
+  price             Decimal
+  stock             Int
+  rating            Int
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  cartItem          CartItem[]
+  itemImage         ItemImage[]
+  itemSpecification ItemSpecification[]
+  wishlistItem      WishlistItem[]
+  type              Category[]          @relation("CategoryToItem")
+}
+
+model WishlistItem {
+  id         Int      @id @default(autoincrement())
+  itemId     Int
+  wishlistId Int
+  item       Item     @relation(fields: [itemId], references: [id])
+  wishlist   Wishlist @relation(fields: [wishlistId], references: [id])
+}
+
+model CartItem {
+  id     Int  @id @default(autoincrement())
+  itemId Int
+  cartId Int
+  cart   Cart @relation(fields: [cartId], references: [id])
+  item   Item @relation(fields: [itemId], references: [id])
+}
+
+model ItemSpecification {
+  id      Int     @id @default(autoincrement())
+  name    String
+  value   String
+  groupBy Boolean @default(false)
+  itemId  Int
+  item    Item    @relation(fields: [itemId], references: [id])
+}
+
+model ItemImage {
+  id     Int    @id @default(autoincrement())
+  value  String
+  itemId Int
+  item   Item   @relation(fields: [itemId], references: [id])
+}
+
+model Wishlist {
+  id           Int            @id @default(autoincrement())
+  name         String
+  userId       Int            @unique
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  user         User           @relation(fields: [userId], references: [id])
+  wishlistItem WishlistItem[]
+}
+
+model Cart {
+  id        Int        @id @default(autoincrement())
+  name      String
+  userId    Int        @unique
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  user      User       @relation(fields: [userId], references: [id])
+  cartItem  CartItem[]
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  oauthId   String?   @unique
+  email     String    @unique
+  password  String?
+  name      String?
+  lastName  String?
+  adress    String?
+  role      Role      @default(USER)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  cart      Cart?
+  wishlist  Wishlist?
+}
+
+enum Role {
+  ADMIN
+  USER
+}
