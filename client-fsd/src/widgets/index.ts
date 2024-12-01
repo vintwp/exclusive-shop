@@ -4,6 +4,7 @@ import { Footer } from './Footer';
 import { AccountSidebar } from './AccountSidebar';
 import { AdminPanelCategory, AdminPanelStore } from './Admin';
 import { BrowseByCategory } from './BrowseByCategory';
+import { StoresList } from './StoresList';
 
 export {
   Header,
@@ -13,4 +14,5 @@ export {
   AdminPanelStore,
   AdminPanelCategory,
   BrowseByCategory,
+  StoresList,
 };

@@ -1,15 +1,12 @@
-import { Category, PrismaClient, Store } from "@prisma/client";
+import { Category, PrismaClient, Store, Brand } from "@prisma/client";
 import { User } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-const initialUsers: User[] = [
+const initialUsers: Array<Omit<User, 'id' | 'updatedAt' | 'createdAt'>> = [
   {
-    id: 1,
     name: 'Vitaliy',
     lastName: 'Pa',
-    createdAt: new Date(),
-    updatedAt: new Date(),
     email: 'admin@gmail.com',
     password: 'admin',
     role: 'ADMIN',
@@ -17,11 +14,8 @@ const initialUsers: User[] = [
     adress: null
   },
   {
-    id: 2,
     name: 'Antonio',
     lastName: 'Banderas',
-    createdAt: new Date(),
-    updatedAt: new Date(),
     email: 'user@gmail.com',
     password: 'user',
     role: 'USER',
@@ -30,145 +24,186 @@ const initialUsers: User[] = [
   }
 ];
 
-const initialStores: Store[] = [
+const initialStores: Array<Omit<Store, 'id' | 'createdAt' | 'updatedAt'>> = [
   {
-    id: 1,
     name: 'Electronics',
     url: 'electronics',
-    createdAt: new Date(),
-    updatedAt: new Date(),
   },
   {
-    id: 2,
     name: 'Automotive',
     url: 'automotive',
-    createdAt: new Date(),
-    updatedAt: new Date(),
   },
   {
-    id: 3,
     name: 'Sports & Outdoor',
     url: 'sports-outdoor',
-    createdAt: new Date(),
-    updatedAt: new Date(),
   },
   {
-    id: 4,
     name: 'Babies & Toys',
     url: 'babies-toys',
-    createdAt: new Date(),
-    updatedAt: new Date(),
   },
   {
-    id: 5,
     name: 'Home & Lifestyle',
     url: 'home-lifestyle',
-    createdAt: new Date(),
-    updatedAt: new Date(),
   },
 ];
 
-const initialCategories: Array<Category & { additionalStores?: number[] }> = [
+const initialCategories: Array<Omit<Category, 'id' | 'createdAt' | 'updatedAt'> & { additionalStores?: number[] }> = [
   {
-    id: 1,
     name: 'Mobile Phones',
     primaryStoreId: 1,
     displayOnMainPage: true,
     image: 'categories/mobile-phones.svg',
     url: 'mobile-phones',
-    createdAt: new Date(),
-    updatedAt: new Date(),
     additionalStores: [],
   },
   {
-    id: 2,
     name: 'Notebooks',
     primaryStoreId: 1,
     displayOnMainPage: true,
     image: 'categories/notebooks.svg',
     url: 'notebooks',
-    createdAt: new Date(),
-    updatedAt: new Date(),
     additionalStores: [],
   },
   {
-    id: 3,
     name: 'Car Bulbs',
     primaryStoreId: 2,
     displayOnMainPage: true,
     image: 'categories/bulbs.svg',
     url: 'bulbs',
-    createdAt: new Date(),
-    updatedAt: new Date(),
     additionalStores: [],
   },
   {
-    id: 4,
     name: 'Headphones',
     primaryStoreId: 1,
     displayOnMainPage: false,
     image: 'categories/headphones.svg',
     url: 'headphones',
-    createdAt: new Date(),
-    updatedAt: new Date(),
     additionalStores: [],
   },
   {
-    id: 5,
     name: 'Oils',
     primaryStoreId: 2,
     displayOnMainPage: true,
     image: 'categories/oil.svg',
     url: 'mobile-phones',
-    createdAt: new Date(),
-    updatedAt: new Date(),
     additionalStores: [],
   },
   {
-    id: 6,
     name: 'Security Systems',
     primaryStoreId: 1,
     displayOnMainPage: true,
     image: 'categories/security-systems.svg',
     url: 'security-systems',
-    createdAt: new Date(),
-    updatedAt: new Date(),
     additionalStores: [5],
   },
   {
-    id: 7,
     name: 'TV',
     primaryStoreId: 1,
     displayOnMainPage: true,
     image: 'categories/tv.svg',
     url: 'tv',
-    createdAt: new Date(),
-    updatedAt: new Date(),
     additionalStores: [],
   },
   {
-    id: 8,
     name: 'Smartwatches',
     primaryStoreId: 1,
     displayOnMainPage: true,
     image: 'categories/smartwatches.svg',
     url: 'smartwatches',
-    createdAt: new Date(),
-    updatedAt: new Date(),
     additionalStores: [],
   },
   {
-    id: 9,
     name: 'Bycicles',
     primaryStoreId: 3,
     displayOnMainPage: true,
     image: 'categories/bycicle.svg',
     url: 'bycicle',
-    createdAt: new Date(),
-    updatedAt: new Date(),
     additionalStores: [4],
   },
 ];
+
+const initialBrands: Array<Omit<Brand, 'id' | 'createdAt' | 'updatedAt'> & { storeId: number[], categoryId: number[] }> = [
+  {
+    name: 'Ajax',
+    url: 'ajax',
+    image: 'brands/ajax.png',
+    storeId: [1, 5],
+    categoryId: [6]
+  },
+  {
+    name: 'Apple',
+    url: 'apple',
+    image: 'brands/apple.png',
+    storeId: [1],
+    categoryId: [1, 2, 4]
+  },
+  {
+    name: 'Garmin',
+    url: 'garmin',
+    image: 'brands/garmin.png',
+    storeId: [1],
+    categoryId: [8]
+  },
+  {
+    name: 'Giant',
+    url: 'giant',
+    image: 'brands/giant.png',
+    storeId: [3],
+    categoryId: [9]
+  },
+  {
+    name: 'LG',
+    url: 'lg',
+    image: 'brands/lg.png',
+    storeId: [1],
+    categoryId: [9]
+  },
+  {
+    name: 'Motul',
+    url: 'motul',
+    image: 'brands/lg.png',
+    storeId: [2],
+    categoryId: [5]
+  },
+  {
+    name: 'Philips',
+    url: 'philips',
+    image: 'brands/philips.png',
+    storeId: [1, 2],
+    categoryId: [4, 3, 7]
+  },
+  {
+    name: 'Samsung',
+    url: 'samsung',
+    image: 'brands/samsung.png',
+    storeId: [1],
+    categoryId: [1, 2, 4, 7, 8]
+  },
+  {
+    name: 'Total',
+    url: 'total',
+    image: 'brands/total.png',
+    storeId: [2],
+    categoryId: [5]
+  },
+  {
+    name: 'Toyota',
+    url: 'toyota',
+    image: 'brands/toyota.png',
+    storeId: [2],
+    categoryId: [5]
+  },
+  {
+    name: 'Xiaomi',
+    url: 'xiaomi',
+    image: 'brands/xiaomi.png',
+    storeId: [1, 5],
+    categoryId: [1, 2, 4, 7, 8]
+  },
+
+]
+
+// const initialBrands
 
 const seed = async () => {
 
@@ -192,28 +227,45 @@ const seed = async () => {
     }
   });
 
+  await prisma.brand.deleteMany({
+    where: {
+      stores: {
+        none: {}
+      },
+      categories: {
+        none: {}
+      }
+    }
+  })
+
   // creating users
-  await prisma.user.createMany({
-    data: initialUsers,
-  });
+  for (const user of initialUsers) {
+    await prisma.user.create({
+      data: {
+        ...user
+      }
+    })
+  }
 
   // creating global stores
-  await prisma.store.createMany({
-    data: initialStores
-  });
+  for (const store of initialStores) {
+    await prisma.store.create({
+      data: {
+        name: store.name,
+        url: store.url
+      }
+    })
+  }
 
   // creating categories
   for (const cat of initialCategories) {
     await prisma.category.create({
       data: {
-        id: cat.id,
         name: cat.name,
         primaryStoreId: cat.primaryStoreId,
         displayOnMainPage: cat.displayOnMainPage,
         image: cat.image,
         url: cat.url,
-        createdAt: cat.createdAt,
-        updatedAt: cat.updatedAt,
         additionalStores: {
           create:
             cat.additionalStores.map(v => {
@@ -228,7 +280,43 @@ const seed = async () => {
         }
       }
     })
-  }
+  };
+
+  // creating brands
+
+  for (const brand of initialBrands) {
+    await prisma.brand.create({
+      data: {
+        name: brand.name,
+        url: brand.url,
+        image: brand.image,
+        stores: {
+          create:
+            brand.storeId.map(v => {
+              return {
+                store: {
+                  connect: {
+                    id: v
+                  }
+                }
+              }
+            })
+        },
+        categories: {
+          create:
+            brand.categoryId.map(v => {
+              return {
+                category: {
+                  connect: {
+                    id: v
+                  }
+                }
+              }
+            })
+        }
+      }
+    })
+  };
 
 }
 
