@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-import { compareObjects } from "./utils";
 
 type TToken = 'access' | 'refresh';
 type TUserJwt = {

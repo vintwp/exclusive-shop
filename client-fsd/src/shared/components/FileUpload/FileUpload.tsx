@@ -2,84 +2,27 @@
 
 'use client';
 
-import { Button, Input } from '@/shared/ui';
-import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
-import { X } from 'lucide-react';
+import { Input } from '@/shared/ui';
+import React from 'react';
 import { Files, FilesGroup } from './types';
+import { PreviewImage } from './PreviewImage';
+import { FileName } from './FileName';
 
-type Props = {
+type PropsCommnon = {
   allowedFiles: FilesGroup;
   onChange: (img: File[]) => void;
   files?: File[];
   multiple?: boolean;
   title?: string;
   preview?: boolean;
+  errorMessage?: string;
 };
 
-type PreviewImageProps = {
-  file: File;
-  onDelete: (v: string) => void;
-};
+type PropsPreview =
+  | { preview?: false; alt?: never }
+  | { preview: true; alt: string };
 
-const PreviewImage: React.FC<PreviewImageProps> = ({ file, onDelete }) => {
-  const [urlImage, setUrlImage] = useState<string>('');
-
-  useEffect(() => {
-    setUrlImage(URL.createObjectURL(file));
-
-    return () => {
-      URL.revokeObjectURL(urlImage);
-    };
-  }, []);
-
-  return (
-    <div className="relative p-2 hover:bg-slate-50">
-      {urlImage ? (
-        <Image
-          src={urlImage}
-          alt="test"
-          width={100}
-          height={100}
-        />
-      ) : (
-        <div className="h-[100px] w-[100px] bg-slate-200" />
-      )}
-
-      <div className="absolute right-1 top-1">
-        <Button
-          type="button"
-          size="icon"
-          className="hover:bg-text-clr-text-2 h-4 w-4 rounded-full bg-transparent text-clr-text-2
-            hover:text-clr-primary"
-          onClick={() => onDelete(file.name)}
-        >
-          <X />
-        </Button>
-      </div>
-    </div>
-  );
-};
-
-const FileName: React.FC<PreviewImageProps> = ({ file, onDelete }) => {
-  return (
-    <div
-      key={file.name}
-      className="flex items-center gap-1 rounded-lg p-1 hover:bg-clr-secondary-2"
-    >
-      <span>{file.name}</span>
-      <Button
-        type="button"
-        size="icon"
-        className="h-4 w-4 rounded-full bg-transparent text-clr-text-2 hover:bg-transparent
-          hover:text-clr-primary"
-        onClick={() => onDelete(file.name)}
-      >
-        <X />
-      </Button>
-    </div>
-  );
-};
+type Props = PropsCommnon & PropsPreview;
 
 export const FileUpload: React.FC<Props> = ({
   allowedFiles,
@@ -87,7 +30,9 @@ export const FileUpload: React.FC<Props> = ({
   files,
   multiple = true,
   title,
-  preview = false,
+  preview,
+  alt,
+  errorMessage = '',
 }) => {
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const filesFromInput = e.target.files;
@@ -125,6 +70,7 @@ export const FileUpload: React.FC<Props> = ({
               key={file.name}
               file={file}
               onDelete={handleDeleteFile}
+              alt={alt}
             />
           ))}
         {!preview &&
@@ -137,6 +83,11 @@ export const FileUpload: React.FC<Props> = ({
           ))}
       </div>
 
+      {errorMessage && (
+        <p className="px-2 text-xs font-light text-clr-button-2">
+          {errorMessage}
+        </p>
+      )}
       <label
         htmlFor="picture"
         className="block cursor-pointer rounded-md border-[1px] border-clr-primary/10 bg-slate-50

@@ -1,6 +1,5 @@
 'use client';
 
-import { Button } from '@/shared/ui';
 import Link from 'next/link';
 import React from 'react';
 import { usePathname } from 'next/navigation';
@@ -20,10 +19,8 @@ export const AccountSidebarLink: React.FC<Props> = ({
   const currentPath = usePathname();
 
   return (
-    <Button
-      asChild
-      variant="link"
-      size="link"
+    <Link
+      href={href}
       className={cn(
         'text-black/50',
         currentPath === href && 'text-clr-button-2',
@@ -32,7 +29,7 @@ export const AccountSidebarLink: React.FC<Props> = ({
         className,
       )}
     >
-      <Link href={href}>{name}</Link>
-    </Button>
+      {name}
+    </Link>
   );
 };

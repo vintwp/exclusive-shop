@@ -8,6 +8,7 @@ import {
 } from "./utils";
 import { convertIdToString } from './convertIdToString';
 import { saveFiles, deleteFiles, updateFiles } from "./fileHandlers";
+import { hashPassword, comparePassword } from "./passwordHandler";
 
 export {
   generateJwt,
@@ -21,4 +22,6 @@ export {
   updateFiles,
   isTrueSet,
   createUrl,
+  hashPassword,
+  comparePassword
 };

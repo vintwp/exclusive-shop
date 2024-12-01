@@ -86,7 +86,7 @@ module.exports = {
     // Typescript
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-unused-vars': ['error'],
-    '@typescript-eslint/indent': ['error', 2],
+    // '@typescript-eslint/indent': ['error', 2],
     '@typescript-eslint/ban-types': [
       'error',
       {

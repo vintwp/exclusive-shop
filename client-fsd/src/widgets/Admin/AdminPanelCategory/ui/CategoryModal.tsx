@@ -268,7 +268,9 @@ export const CategoryModal: React.FC<Props> = ({
                   title="Category Icon"
                   onChange={onChange}
                   files={value}
+                  errorMessage={errors.image ? errors.image.message : ''}
                   preview
+                  alt="Category Icon"
                 />
               );
             }}

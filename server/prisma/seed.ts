@@ -1,5 +1,6 @@
 import { Category, PrismaClient, Store, Brand } from "@prisma/client";
 import { User } from "@prisma/client";
+import { hashPassword } from "../lib";
 
 const prisma = new PrismaClient();
 
@@ -240,9 +241,12 @@ const seed = async () => {
 
   // creating users
   for (const user of initialUsers) {
+    const hashedPassword = await hashPassword(user.password);
+
     await prisma.user.create({
       data: {
-        ...user
+        ...user,
+        password: hashedPassword,
       }
     })
   }

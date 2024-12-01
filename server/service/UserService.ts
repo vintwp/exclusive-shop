@@ -1,9 +1,8 @@
 import bcrypt from 'bcrypt';
-import jwt from "jsonwebtoken";
 import { prisma } from "../prisma";
 import ApiError from '../error/ApiError';
 import { $Enums, User } from '@prisma/client';
-import { deleteProperties, generateJwt, vefiryJwt, dateInISO } from '../lib';
+import { deleteProperties, generateJwt, vefiryJwt, dateInISO, hashPassword, comparePassword } from '../lib';
 import { TUserResponse, TUserUpdate } from '../types';
 
 const defaultRole = $Enums.Role.USER;
@@ -25,12 +24,12 @@ class UserService {
       throw ApiError.alreadyExist('Email is used. Please provide another email');
     }
 
-    const hashPassword = await bcrypt.hash(password, 5);
+    const hashedPassword = await hashPassword(password);
     
     const user = await prisma.user.create({
       data: {
         email,
-        password: hashPassword,
+        password: hashedPassword,
         role,
       }
     });
@@ -60,7 +59,7 @@ class UserService {
       throw ApiError.forbidden('User is not found');
     }
 
-    const isTruePass = bcrypt.compareSync(password, user.password);
+    const isTruePass = await comparePassword(password, user.password);
 
     if (!isTruePass) {
       throw ApiError.forbidden('Password is incorrect');
