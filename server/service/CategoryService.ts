@@ -67,24 +67,6 @@ class CategoryService {
       Pick<Category, 'name' | 'primaryStoreId' | 'displayOnMainPage' | 'image'>
         & { id: string, additionalStoreId: string[] }
   ) {
-    
-
-    const additionalStores = category.additionalStoreId.length ? {
-      create:
-      category.additionalStoreId.map(v => {
-        return {
-          store: {
-            connect: {
-              id: +v
-            }
-          }
-        }
-      })
-    } : {}
-
-    console.log(category.additionalStoreId)
-    console.log(category.additionalStoreId.length)
-      
     const updatedCategory = await prisma.category.update({
       where: {
         id: +category.id,
@@ -127,50 +109,6 @@ class CategoryService {
       },
     });
 
-    // const updatedCategory = await prisma.category.update({
-    //   where: {
-    //     id: +category.id,
-    //   },
-    //   data: {
-    //     name: category.name,
-    //     primaryStoreId: +category.primaryStoreId,
-    //     displayOnMainPage: category.displayOnMainPage,
-    //     image: category.image,
-    //     url: createUrl(category.name),
-    //     additionalStores: {
-    //       deleteMany: {},
-    //       create:
-    //         category.additionalStoreId.map(v => {
-    //           return {
-    //             store: {
-    //               connect: {
-    //                 id: +v
-    //               }
-    //             }
-    //           }
-    //         })
-    //     }
-    //   },
-    //   select: {
-    //     id: true,
-    //     name: true,
-    //     url: true,
-    //     primaryStoreId: true,
-    //     primaryStore: true,
-    //     additionalStores: {
-    //       select: {
-    //         store: true
-    //       }
-    //     },
-    //     displayOnMainPage: true,
-    //     image: true,
-    //     createdAt: true,
-    //     updatedAt: true,
-    //   },
-    // });
-
-    console.log(updatedCategory, 'updated category');
-
     return updatedCategory as TCategoryResponseDB;
   }
 
@@ -212,7 +150,7 @@ class CategoryService {
     const category = await prisma.category.delete({
       where: {
         id: +id,
-      }
+      },
     }); 
 
     return category as Category;

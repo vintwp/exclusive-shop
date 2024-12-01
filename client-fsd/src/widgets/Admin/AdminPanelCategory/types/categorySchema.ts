@@ -27,10 +27,10 @@ const categoryFormSchema = z.object({
         });
       }
 
-      if (val.length === 1 && val[0].name.split('.')[1] !== 'png') {
+      if (val.length === 1 && val[0].name.split('.')[1] !== 'svg') {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: 'Icon should be in png',
+          message: 'Icon should be in svg',
         });
       }
     }),
