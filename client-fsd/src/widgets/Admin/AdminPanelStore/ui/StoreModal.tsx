@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-
 'use client';
 
 import React, { useEffect } from 'react';
@@ -14,8 +12,8 @@ type Props = {
   open: boolean;
   onOpenChange: (v: boolean) => void;
   editId?: string;
-  handleCreate?: (data: string) => Promise<void>;
-  handleEdit?: (data: Pick<Store, 'id' | 'name'>) => Promise<void>;
+  handleCreate: (data: string) => Promise<void>;
+  handleEdit: (data: Pick<Store, 'id' | 'name'>) => Promise<void>;
 };
 
 const storeFormSchema = z.object({
@@ -73,6 +71,7 @@ export const StoreModal: React.FC<Props> = ({
         })
         .catch(() => setValue('name', ''));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editId]);
 
   return (

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/indent */
-
 'use client';
 
 import * as React from 'react';

@@ -10,6 +10,7 @@ router.post('/', CategoryController.create);
 router.get('/', CategoryController.getAll);
 router.put('/:id', CategoryController.update);
 router.get('/:id', CategoryController.getById);
+router.get('/:id/brand', CategoryController.getBrandsByCategory);
 router.delete('/:id', CategoryController.delete);
 
 

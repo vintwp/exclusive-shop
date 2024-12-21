@@ -85,6 +85,7 @@ import { Separator } from './Separator';
 
 import { Toaster, useToast } from './Toaster';
 
+// eslint-disable-next-line import/no-cycle
 import {
   Carousel,
   CarouselContent,
@@ -108,6 +109,24 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from './Popover';
 
 import { Badge } from './Badge';
+
+import {
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuContent,
+  NavigationMenuTrigger,
+  NavigationMenuLink,
+  NavigationMenuIndicator,
+  NavigationMenuViewport,
+} from './NavigationMenu';
+
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from './Accordion';
 
 // #endregion
 
@@ -192,4 +211,16 @@ export {
   PopoverContent,
   PopoverTrigger,
   Badge,
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuContent,
+  NavigationMenuTrigger,
+  NavigationMenuLink,
+  NavigationMenuIndicator,
+  NavigationMenuViewport,
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
 };

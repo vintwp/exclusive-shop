@@ -20,8 +20,8 @@ const ToastViewport = React.forwardRef<
   <ToastPrimitives.Viewport
     ref={ref}
     className={cn(
-      `fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0
-      sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]`,
+      `text-green- fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4
+      sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]`,
       className,
     )}
     {...props}
@@ -38,6 +38,8 @@ const toastVariants = cva(
           'border bg-white text-neutral-950 dark:bg-neutral-950 dark:text-neutral-50',
         destructive:
           'destructive group border-red-500 bg-red-500 text-neutral-50 dark:border-red-900 dark:bg-red-900 dark:text-neutral-50',
+        successful:
+          'successful group text-green-800 bg-green-300 text-green-900',
       },
     },
     defaultVariants: {
@@ -99,7 +101,9 @@ const ToastClose = React.forwardRef<
       `absolute right-2 top-2 rounded-md p-1 text-neutral-950/50 opacity-0
       transition-opacity hover:text-neutral-950 focus:opacity-100 focus:outline-none
       focus:ring-2 group-hover:opacity-100 group-[.destructive]:text-red-300
-      group-[.destructive]:hover:text-red-50 group-[.destructive]:focus:ring-red-400
+      group-[.successfull]:text-green-700 group-[.destructive]:hover:text-red-50
+      group-[.successfull]:hover:text-green-950
+      group-[.destructive]:focus:ring-red-400
       group-[.destructive]:focus:ring-offset-red-600 dark:text-neutral-50/50
       dark:hover:text-neutral-50`,
       className,

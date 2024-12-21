@@ -15,9 +15,9 @@ export const LOGIN_REFRESH = getEnvVar('USER_REFRESH');
 export const AUTH_SECRET = getEnvVar('AUTH_SECRET');
 export const AUTH_GOOGLE_ID = getEnvVar('AUTH_GOOGLE_ID');
 export const AUTH_GOOGLE_SECRET = getEnvVar('AUTH_GOOGLE_SECRET');
-export const USER_GET_PROFILE = getEnvVar('USER_GET_PROFILE');
-export const USER_UPDATE_PROFILE = getEnvVar('USER_UPDATE_PROFILE');
 export const CATEGORY_API = getEnvVar('CATEGORY_API');
 export const STORE_API = getEnvVar('STORE_API');
+export const USER_API = getEnvVar('USER_API');
+export const SEARCH_API = getEnvVar('SEARCH_API');
 
 export const ALL_USERS = getEnvVar('USER_GETALL');

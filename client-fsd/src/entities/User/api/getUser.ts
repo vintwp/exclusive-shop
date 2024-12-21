@@ -1,13 +1,9 @@
 'use server';
 
 import axios from '@/shared/api/axios';
-import { auth, USER_GET_PROFILE } from '@/shared/config';
-import { ApiError, ApiResponse } from '@/shared/models';
+import { auth, USER_API } from '@/shared/config';
+import { ApiError, ResponseApi } from '@/shared/models';
 import { User } from '../model';
-
-type UserId = {
-  id: string;
-};
 
 const getUser = async () => {
   const authSession = await auth();
@@ -17,30 +13,29 @@ const getUser = async () => {
     const accessToken = authSession.access_token;
 
     try {
-      const req = await axios.getData<User, UserId>(
-        USER_GET_PROFILE,
+      const req = await axios.getData<User>(
+        `${USER_API}/${userId}`,
         accessToken,
-        { id: userId },
       );
 
       return {
-        status: 'ok',
+        ok: true,
         data: req,
-      } as ApiResponse<'success', User>;
+      } as ResponseApi<User>;
     } catch (err) {
       const error = err as ApiError;
 
       return {
-        status: 'error',
+        status: error.status,
         message: error.message,
-      } as ApiResponse<'error'>;
+      } as ResponseApi;
     }
   }
 
   return {
-    status: 'error',
-    message: 'Unexpected Error',
-  } as ApiResponse<'error'>;
+    status: 400,
+    message: 'Unexpected error',
+  } as ResponseApi;
 };
 
 export { getUser };

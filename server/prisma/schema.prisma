@@ -7,22 +7,37 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
+// store
 model Store {
   id                      Int        @id @default(autoincrement()) @map("store_id")
-  name                    String     @map("store_name")
+  name                    String     @map("store_name") @unique
   url                     String     @map("store_url")
   primaryCategories       Category[]
   additionalCategories    StoreCategories[]
-  brands                  StoreBrands[]
   createdAt               DateTime   @default(now()) @map("created_at")
   updatedAt               DateTime   @updatedAt @map("updated_at")
 }
 
+model StoreCategories {
+  id            Int @id @default(autoincrement()) @map("store_categories_id")
+  storeId       Int @map("store_id")
+  categoryId    Int @map("category_id")
+  store         Store @relation(fields: [storeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  category      Category @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  assignedAt    DateTime @default(now()) @map("assigned_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@map("_store-categories")
+}
+
+
+// category
 model Category {
   id                Int      @id @default(autoincrement()) @map("category_id")
-  name              String   @map("category_name")
+  name              String   @map("category_name") @unique
   primaryStoreId    Int      @map("primary_store_id")
-  primaryStore      Store    @relation(fields: [primaryStoreId], references: [id])
+  primaryStore      Store    @relation(fields: [primaryStoreId], references: [id], onDelete: Restrict, onUpdate: Cascade)
   additionalStores  StoreCategories[]
   brands            CategoryBrands[]
   displayOnMainPage Boolean  @default(false) @map("display_on_main_page")
@@ -33,51 +48,28 @@ model Category {
   updatedAt         DateTime @updatedAt @map("updated_at")
 }
 
-model StoreCategories {
-  storeId       Int @map("store_id")
+model CategoryBrands {
+  id            Int @id @default(autoincrement())
   categoryId    Int @map("category_id")
-  store         Store @relation(fields: [storeId], references: [id])
+  brandId       Int @map("brand_id")
   category      Category @relation(fields: [categoryId], references: [id])
+  brand         Brand @relation(fields: [brandId], references: [id])
   assignedAt    DateTime @default(now()) @map("assigned_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
 
-  @@unique([storeId, categoryId])
-  @@map("_store-categories")
+  @@map("_category-brands")
 }
 
+
+// brand
 model Brand {
   id         Int      @id @default(autoincrement())
   name       String   @map("brand_name")
   url        String   @map("brand_url")
   image      String   @map("brand_logo")
-  stores     StoreBrands[]
   categories CategoryBrands[]
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-}
-
-model StoreBrands {
-  storeId       Int @map("store_id")
-  brandId       Int @map("brand_id")
-  store         Store @relation(fields: [storeId], references: [id])
-  brand         Brand @relation(fields: [brandId], references: [id])
-  assignedAt    DateTime @default(now()) @map("assigned_at")
-  updatedAt     DateTime @updatedAt @map("updated_at")
-
-  @@unique([storeId, brandId])
-  @@map("_store-brands")
-}
-
-model CategoryBrands {  
-  categoryId    Int @map("store_id")
-  brandId       Int @map("brand_id")
-  category      Category @relation(fields: [categoryId], references: [id])
-  brand         Brand @relation(fields: [brandId], references: [id])
-  assignedAt    DateTime @default(now()) @map("assigned_at")
-  updatedAt     DateTime @updatedAt @map("updated_at")
-
-  @@unique([categoryId, brandId])
-  @@map("_category-brands")
+  createdAt  DateTime   @default(now()) @map("created_at")
+  updatedAt  DateTime   @updatedAt @map("updated_at")
 }
 
 model Item {

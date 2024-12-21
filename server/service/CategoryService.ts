@@ -1,11 +1,11 @@
 import ApiError from "../error/ApiError";
 import { prisma } from "../prisma";
-import { Category, Store } from "@prisma/client";
+import { Brand, Category, Store } from "@prisma/client";
 import { deleteFiles, createUrl, convertIdToString } from "../lib";
 import { TCategoryResponseDB } from "../src/types";
 
 class CategoryService {
-  async create(newCategory: Pick<Category, 'name' | 'primaryStoreId' | 'image' | 'displayOnMainPage'>) {
+  async create(newCategory: Pick<Category, 'name' | 'image' | 'displayOnMainPage'> & { primaryStoreId : string}) {
     const category = await prisma.category.create({
       data: {
         name: newCategory.name,
@@ -147,13 +147,50 @@ class CategoryService {
       throw ApiError.badRequest('Invalid ID');
     }
 
-    const category = await prisma.category.delete({
-      where: {
-        id: +id,
-      },
-    }); 
+    try {
+      await prisma.category.update({
+        where: {
+          id: +id,
+        },
+        data: {
+          additionalStores: {
+            deleteMany: {}
+          }
+        }
+      });
+  
+      const category = await prisma.category.delete({
+        where: {
+          id: +id,
+        },
+      }); 
 
-    return category as Category;
+      return category as TCategoryResponseDB;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async getBrandsByCategory(id: NonNullable<string>) {
+    if (!id || !+id) {
+      throw ApiError.badRequest('Invalid ID');
+    }
+
+    const categoryBrands = await prisma.category.findUnique({
+      where: {
+        id: +id
+      }, include: {
+        brands: {
+          select: {
+            brand: true
+          }
+        }
+      }
+    });
+
+    const brands = categoryBrands.brands.map(v => v.brand);
+
+    return brands as Brand[];
   }
 };
 

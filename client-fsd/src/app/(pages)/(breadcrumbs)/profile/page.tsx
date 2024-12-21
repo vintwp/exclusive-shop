@@ -7,10 +7,14 @@ export default async function MyAccountPage() {
 
   return (
     <div>
-      {req.status === 'ok' ? (
+      {req.ok ? (
         <EditAccount user={req.data} />
       ) : (
-        <ErrorMessage errorMessage="Something went wrong. Please reload page" />
+        <ErrorMessage
+          errorMessage={
+            req.message || 'Something went wrong. Please reload page'
+          }
+        />
       )}
     </div>
   );

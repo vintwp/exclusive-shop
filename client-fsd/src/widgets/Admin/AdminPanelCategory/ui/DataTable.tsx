@@ -56,26 +56,39 @@ export const DataTable: React.FC<Props> = ({ data }) => {
       dataCategory.image,
     );
 
-    const category = await createCategory(formData);
+    const req = await createCategory(formData);
 
-    if (category.ok) {
+    if (req.ok) {
       toast({
         description: `${dataCategory.name} store was created`,
       });
-
-      setOpen(false);
-      router.refresh();
+    } else {
+      toast({
+        variant: 'destructive',
+        description: req.message,
+      });
     }
+
+    setOpen(false);
+    router.refresh();
   };
 
   const handleDeleteCategory = async (id: string) => {
     setLoading(true);
 
-    await deleteCategory(id);
+    const req = await deleteCategory(id);
 
-    toast({
-      description: 'Store was deleted',
-    });
+    if (req.ok) {
+      toast({
+        variant: 'successful',
+        description: 'Store was deleted',
+      });
+    } else {
+      toast({
+        variant: 'destructive',
+        description: req.message,
+      });
+    }
 
     router.refresh();
 
@@ -95,16 +108,22 @@ export const DataTable: React.FC<Props> = ({ data }) => {
       dataCategory.image,
     );
 
-    const category = await updateCategory(dataCategory?.id || '', formData);
+    const req = await updateCategory(dataCategory?.id || '', formData);
 
-    if (category.ok) {
+    if (req.ok) {
       toast({
+        variant: 'successful',
         description: `${dataCategory.name} store was updated`,
       });
-
-      setOpen(false);
-      router.refresh();
+    } else {
+      toast({
+        variant: 'destructive',
+        description: req.message,
+      });
     }
+
+    setOpen(false);
+    router.refresh();
 
     clearRowIds();
   };

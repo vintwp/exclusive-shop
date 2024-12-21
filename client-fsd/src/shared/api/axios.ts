@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 /* eslint-disable class-methods-use-this */
-import axios, { AxiosError, AxiosRequestConfig } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import ApiError from '../models/apiError';
 
 type AxiosErrorMessage = {
@@ -24,7 +24,13 @@ const headerWithAuth = (accessToken: string | undefined) => {
 };
 
 axiosInstance.interceptors.response.use(
-  response => response,
+  (response: AxiosResponse) => {
+    return {
+      ...response,
+      data: response.data.data,
+      message: response.data?.message,
+    };
+  },
   (error: AxiosError<AxiosErrorMessage>) => {
     const response: AxiosErrorResponse = {
       status: error.status || 400,
@@ -62,9 +68,9 @@ class ApiRequest {
     }
   }
 
-  async postData<T>(
+  async postData<T, K = undefined>(
     url: string,
-    data: Partial<T>,
+    data: K | Partial<T>,
     accessToken?: string,
     config?: AxiosRequestConfig,
   ) {

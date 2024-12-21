@@ -8,6 +8,7 @@ import {
   DrawerClose,
   DrawerContent,
   DrawerHeader,
+  DrawerTitle,
   DrawerTrigger,
 } from '@/shared/ui';
 import { usePathname } from 'next/navigation';
@@ -33,10 +34,14 @@ export const MobileNavigation: React.FC = () => {
       open={isOpened}
       onOpenChange={setIsOpened}
     >
+      <DrawerTitle />
       <DrawerTrigger>
         <Menu />
       </DrawerTrigger>
-      <DrawerContent className="left-0 top-0 mt-0 h-full w-max min-w-[200px] rounded-none">
+      <DrawerContent
+        className="left-0 top-0 mt-0 h-full w-max min-w-[200px] rounded-none"
+        aria-describedby=""
+      >
         <DrawerHeader className="flex justify-end bg-black">
           <DrawerClose className="text-white transition-colors hover:text-white/80">
             <X className="hover:text-clr-secondary-3" />

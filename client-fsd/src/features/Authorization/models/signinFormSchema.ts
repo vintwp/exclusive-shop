@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import { z } from 'zod';
 
 export const signinSchema = z.object({

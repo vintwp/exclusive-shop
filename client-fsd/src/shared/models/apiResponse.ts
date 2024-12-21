@@ -1,20 +1,20 @@
-enum Status {
-  ok = 'ok',
-  error = 'error',
-}
+// enum Status {
+//   ok = 'ok',
+//   error = 'error',
+// }
 
-type ResponseStatus = 'success' | 'error';
+// type ResponseStatus = 'success' | 'error';
 
-type ApiResponseOk<T> = {
-  status: Status.ok;
-  data: T;
-};
+// type ApiResponseOk<T> = {
+//   status: Status.ok;
+//   data: T;
+// };
 
-type ApiResponseError = {
-  status: Status.error;
-  code: number;
-  message: string;
-};
+// type ApiResponseError = {
+//   status: Status.error;
+//   code: number;
+//   message: string;
+// };
 
 // type ApiResponse<T extends ResStatus, K = undefined> = {
 //   status: T;
@@ -23,14 +23,15 @@ type ApiResponseError = {
 //   data: T extends Extract<ResStatus, 'success'> ? K : never;
 // };
 
-type ApiResponse<T extends ResponseStatus, K = undefined> =
-  T extends Extract<ResponseStatus, 'error'>
-    ? ApiResponseError
-    : ApiResponseOk<K>;
+// type ApiResponse<T extends ResponseStatus, K = undefined> =
+//   T extends Extract<ResponseStatus, 'error'>
+//     ? ApiResponseError
+//     : ApiResponseOk<K>;
 
 type ResponseOk<T> = {
   ok: true;
   data: T;
+  message?: string;
 };
 
 type ResponseError = {
@@ -39,6 +40,8 @@ type ResponseError = {
   message: string;
 };
 
-type ResponseApi<T> = ResponseOk<T> | ResponseError;
+type ResponseApi<T = undefined> = T extends undefined
+  ? ResponseError
+  : ResponseOk<T>;
 
-export type { ApiResponseOk, ApiResponseError, ApiResponse, ResponseApi };
+export type { ResponseApi };

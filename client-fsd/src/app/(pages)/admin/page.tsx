@@ -1,4 +1,4 @@
-import { ApiRequest } from '@/shared/api';
+import { axios } from '@/shared/api';
 import { ALL_USERS, auth } from '@/shared/config';
 import { User } from '@/entities/User/model';
 
@@ -6,7 +6,7 @@ async function getUsers() {
   const session = await auth();
   const accessToken = session?.access_token || '';
 
-  const request = await ApiRequest.getData<User>(ALL_USERS, accessToken);
+  const request = await axios.getData<User>(ALL_USERS, accessToken);
 
   return request;
 }

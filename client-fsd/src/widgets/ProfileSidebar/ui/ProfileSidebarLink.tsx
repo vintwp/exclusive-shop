@@ -11,7 +11,7 @@ type Props = {
   className?: string;
 };
 
-export const AccountSidebarLink: React.FC<Props> = ({
+export const ProfileSidebarLink: React.FC<Props> = ({
   name,
   href,
   className,

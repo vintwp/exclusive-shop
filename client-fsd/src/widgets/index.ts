@@ -1,7 +1,7 @@
 import { Header } from './Header';
 import { TopHeader } from './TopHeader';
 import { Footer } from './Footer';
-import { AccountSidebar } from './AccountSidebar';
+import { ProfileSidebar } from './ProfileSidebar';
 import { AdminPanelCategory, AdminPanelStore } from './Admin';
 import { BrowseByCategory } from './BrowseByCategory';
 import { StoresList } from './StoresList';
@@ -10,7 +10,7 @@ export {
   Header,
   TopHeader,
   Footer,
-  AccountSidebar,
+  ProfileSidebar,
   AdminPanelStore,
   AdminPanelCategory,
   BrowseByCategory,

@@ -3,10 +3,13 @@ import { CategoryService } from "../service";
 import { UploadedFile } from "express-fileupload";
 import { saveFiles, isTrueSet, convertIdToString, deleteFiles, updateFiles } from "../lib";
 import { TCategoryRequest, TCategoryResponseDB, TCategoryResponseServer } from "../src/types";
-import { Store } from "@prisma/client";
+import { Brand, Store } from "@prisma/client";
+import { IRequest, IResponse, IResponseData } from "../types";
 
 
-function createCategoryResponse(data: TCategoryResponseDB | TCategoryResponseDB[]) {
+function createCategoryResponse(
+  data: TCategoryResponseDB | TCategoryResponseDB[]
+): TCategoryResponseServer | TCategoryResponseServer[] {
   const addStoresForResponse = (data: Array<{ store: Store }>) => {
     return data.map(addStore => (addStore.store))
   };
@@ -25,13 +28,16 @@ function createCategoryResponse(data: TCategoryResponseDB | TCategoryResponseDB[
   return convertIdToString({
     ...data,
     additionalStores: addStoresForResponse(data.additionalStores),
-  }) as TCategoryResponseServer;
+  });
 }
 
 
 class CategoryController {
-  async create(req: Request, res: Response) {
-    const { name, primaryStoreId, displayOnMainPage } = req.body; 
+  async create(
+    req: IRequest<{ name: string, primaryStoreId: string, displayOnMainPage: string }>,
+    res: IResponse<{ data: TCategoryResponseServer }>
+  ) {
+    const { name, primaryStoreId, displayOnMainPage } = req.body;
     const icon = req?.files.files as UploadedFile;
     
     const categoryIconName = await saveFiles(icon, 'categories');
@@ -44,19 +50,26 @@ class CategoryController {
       image: categoryIconName,
     });
 
-    const reponseCategory = createCategoryResponse(category);
+    const reponseCategory
+      = createCategoryResponse(category) as TCategoryResponseServer;
 
-    return res.json(convertIdToString(reponseCategory));
+    return res.json({
+      data: reponseCategory,
+    });
   }
 
-  async getAll(_: any, res: Response) {
+  async getAll(_: any, res: IResponse<{ data: TCategoryResponseServer[] } >) {
     const categories = await CategoryService.getAll();
-    const reponseCategories = createCategoryResponse(categories);
+    const reponseCategories = createCategoryResponse(categories) as TCategoryResponseServer[];
 
-    return res.json(reponseCategories);
+    return res.json({ data: reponseCategories });
   }
 
-  async update(req: IRequest<TCategoryRequest, { id: string }>, res: Response,  next: NextFunction) {
+  async update(
+    req: IRequest<TCategoryRequest>,
+    res: IResponse<{ data: TCategoryResponseServer }>,
+    next: NextFunction
+  ) {
     try {
       const { id } = req.params;
       const { name, primaryStoreId, displayOnMainPage, additionalStoreId } = req.body;
@@ -81,9 +94,11 @@ class CategoryController {
         additionalStoreId: additionalStoreIds,
       });
 
-      const responseCategory = createCategoryResponse(updatedCategory);
+      const responseCategory = createCategoryResponse(updatedCategory) as TCategoryResponseServer;
 
-      return res.json(responseCategory);
+      return res.json({
+        data: responseCategory
+      });
 
     } catch (e) {
       return next(e);
@@ -91,21 +106,31 @@ class CategoryController {
 
   }
 
-  async getById(req: Request, res: Response, next: NextFunction) {
+  async getById(
+    req: IRequest<any>,
+    res: IResponse<{ data: TCategoryResponseServer }>,
+    next: NextFunction
+  ) {
     try {
       const { id } = req.params;
 
       const category = await CategoryService.getById(id);
-      const reponseCategory = createCategoryResponse(category);
+      const reponseCategory = createCategoryResponse(category) as TCategoryResponseServer;
 
-      return res.json(reponseCategory);
+      return res.json({
+        data: reponseCategory,
+      });
 
     } catch (e) {
       return next(e);
     }
   }
 
-  async delete(req: Request, res: Response, next: NextFunction) {
+  async delete(
+    req: IRequest<any>,
+    res: IResponse<{ data: TCategoryResponseServer }>,
+    next: NextFunction
+  ) {
     try {
       const { id } = req.params;
       const { image } = await CategoryService.getById(id);
@@ -113,11 +138,31 @@ class CategoryController {
       await deleteFiles(image, 'categories');
 
       const category = await CategoryService.delete(id);
+      const reponseCategory = createCategoryResponse(category) as TCategoryResponseServer;
 
-      return res.json(category);
+      return res.json({
+        data: reponseCategory,
+      });
 
     } catch (e) {
       return next(e);
+    }
+  }
+
+  async getBrandsByCategory(
+    req: IRequest<any>,
+    res: IResponse<{ data: Brand[] }>,
+    next: NextFunction
+  ) {
+    try {
+      const { id } = req.params;
+      const brands = await CategoryService.getBrandsByCategory(id);
+      
+      return res.json({
+        data: brands,
+      });
+    } catch (error) {
+      return next(error);
     }
   }
 }

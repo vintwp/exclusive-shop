@@ -27,7 +27,7 @@ const resolvePath = (fileName: string) => {
 };
 
 const unlinkFile = async (removeFileName: string, folderName?: string): Promise<void> => {
-  const filePath = `${folderName ? `${folderName}/` : ''}` + resolvePath(removeFileName);
+  const filePath = resolvePath(removeFileName);
 
   try {
     await fs.stat(filePath);
@@ -86,18 +86,19 @@ export async function deleteFiles<T extends string | string[]>(
   files: T,
   folderName?: string
 ): Promise<void | void[]> {
+  try {
 
-  if (Array.isArray(files)) {
-    try {
+    if (Array.isArray(files)) {
       return await Promise.all(files.map(async (file) => {
         await unlinkFile(file);
       }));
-    } catch (err) {
-      return console.log(err);
     }
-  }
 
-  return await unlinkFile(files, folderName);
+    return await unlinkFile(files, folderName);
+    
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export async function updateFiles<

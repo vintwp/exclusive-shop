@@ -1,19 +1,19 @@
 'use server';
 
 import { LOGIN_REG } from '@/shared/config';
-import { ApiRequest } from '@/shared/api';
-import { ApiError, ApiResponse, Credentials } from '@/shared/models';
+import { axios } from '@/shared/api';
+import { ApiError, Credentials, ResponseApi } from '@/shared/models';
 import { TResponseUser } from '../models/responseUser';
 
 const createUser = async (credentials: Credentials) => {
   try {
-    const request = await ApiRequest.postData<TResponseUser, Credentials>(
+    const request = await axios.postData<TResponseUser, Credentials>(
       LOGIN_REG,
       credentials,
     );
 
-    const res: ApiResponse<'success', TResponseUser> = {
-      status: 'success',
+    const res: ResponseApi<TResponseUser> = {
+      ok: true,
       data: request,
     };
 
@@ -21,9 +21,8 @@ const createUser = async (credentials: Credentials) => {
   } catch (err) {
     const error = err as ApiError;
 
-    const res: ApiResponse<'error'> = {
-      status: 'error',
-      code: error.status,
+    const res: ResponseApi = {
+      status: error.status,
       message: error.message,
     };
 

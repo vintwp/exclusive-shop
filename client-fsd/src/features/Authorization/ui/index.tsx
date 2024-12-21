@@ -1,13 +1,11 @@
-/* eslint-disable import/no-extraneous-dependencies */
-
 'use client';
 
-import { Button, Spinner } from '@/shared/ui';
-import Link from 'next/link';
 import React, { useState } from 'react';
-import { AuthFormInput, ErrorMessage } from '@/shared/components';
+import Link from 'next/link';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { AuthFormInput, ErrorMessage } from '@/shared/components';
+import { Button, Spinner } from '@/shared/ui';
 import { TSigninSchema, signinSchema } from '../models/signinFormSchema';
 import { signInByCredentials } from '../api';
 
@@ -25,11 +23,11 @@ export const Authorization: React.FC = () => {
   const onSubmit: SubmitHandler<TSigninSchema> = async data => {
     const req = await signInByCredentials(data);
 
-    if (req.error) {
-      setErrorMessage(req.errorMessage);
+    if (req && !req.ok) {
+      setErrorMessage(req.message);
     }
 
-    if (req.ok && errorMessage) {
+    if (!req && errorMessage) {
       setErrorMessage('');
     }
   };
@@ -79,7 +77,7 @@ export const Authorization: React.FC = () => {
             variant="ghost"
             className="text-clr-button-2 hover:bg-transparent hover:text-clr-button-hov"
           >
-            <Link href="/forgot-password"> Forget Password?</Link>
+            <Link href="/forgot-password">Forget Password?</Link>
           </Button>
         </div>
       </form>

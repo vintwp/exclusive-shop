@@ -4,7 +4,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { ErrorMessage, FormInput } from '@/shared/components';
-import { Button } from '@/shared/ui';
+import { Button, useToast } from '@/shared/ui';
 import { SubmitHandler, useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { User, UserUpdate, updateUser } from '@/entities/User';
@@ -16,6 +16,7 @@ type Props = {
 
 export const FormEdit: React.FC<Props> = ({ user }) => {
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const { toast } = useToast();
 
   const userDefaultValues = {
     name: user.name || '',
@@ -42,7 +43,6 @@ export const FormEdit: React.FC<Props> = ({ user }) => {
 
   const onSubmit: SubmitHandler<TEditSchema> = async data => {
     const userToUpdate = {
-      id: user.id,
       email: data.email,
       name: data.name,
       lastName: data.lastName,
@@ -51,10 +51,17 @@ export const FormEdit: React.FC<Props> = ({ user }) => {
       newPassword: data.newPassword,
     } as UserUpdate;
 
-    const req = await updateUser(userToUpdate);
+    const req = await updateUser(user.id, userToUpdate);
 
-    if (req.status === 'error') {
-      setErrorMessage(req.message);
+    if (req.ok) {
+      toast({
+        variant: 'successful',
+        description: req.message,
+      });
+    }
+
+    if (!req.ok) {
+      setErrorMessage(req.message || 'Unexpected error');
     }
   };
 

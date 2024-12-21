@@ -1,7 +1,7 @@
-import { UserModel } from '@/entities/User';
+import { User } from '@/entities/User';
 
 export type TResponseUser = {
-  user: Pick<UserModel.User, 'id' | 'email' | 'role'>;
+  user: Pick<User, 'id' | 'email' | 'role'>;
   access_token: string;
   refresh_token: string;
 };

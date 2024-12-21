@@ -29,7 +29,7 @@ export const Registration: React.FC = () => {
   const onSubmit: SubmitHandler<TSignupSchema> = async data => {
     const req = await createUser(data);
 
-    if (req.status === 'error') {
+    if (!req.ok) {
       setErrorMessage(req.message!);
     }
   };

@@ -1,7 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/indent */
-/* eslint-disable @typescript-eslint/no-unnecessary-type-constraint */
-
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -45,12 +41,26 @@ export const DataTable: React.FC<Props> = ({ data }) => {
 
   const handleDeleteStore = async (id: string) => {
     setLoading(true);
-    await deleteStore(id);
-    toast({
-      description: 'Store was deleted',
-    });
-    router.refresh();
+    const res = await deleteStore(id);
+
+    if (res.ok) {
+      toast({
+        variant: 'successful',
+        description: res.message || 'Store was deleted',
+      });
+    }
+
+    if (!res.ok) {
+      toast({
+        variant: 'destructive',
+        title: `Code : ${res.status}`,
+        description: res.message,
+      });
+    }
+
     setLoading(false);
+    clearRowIds();
+    router.refresh();
   };
 
   const handleCreateStore = async (name: string) => {
@@ -58,11 +68,21 @@ export const DataTable: React.FC<Props> = ({ data }) => {
 
     if (store.ok) {
       toast({
-        description: `${name} store was created`,
+        variant: 'successful',
+        description: 'Store was deleted',
       });
-      setOpen(false);
-      router.refresh();
     }
+
+    if (!store.ok) {
+      toast({
+        variant: 'destructive',
+        title: `Code : ${store.status}`,
+        description: store.message,
+      });
+    }
+
+    setOpen(false);
+    router.refresh();
   };
 
   const handleEditStore = async (dataStore: Pick<Store, 'id' | 'name'>) => {
@@ -70,14 +90,23 @@ export const DataTable: React.FC<Props> = ({ data }) => {
 
     if (store.ok) {
       toast({
-        description: `${store.data.name} store was updated`,
+        variant: 'successful',
+        description: 'Store was updated',
       });
-      setOpen(false);
-      clearRowIds();
-      router.refresh();
+    }
+
+    if (!store.ok) {
+      toast({
+        variant: 'destructive',
+        title: `Code : ${store.status}`,
+        description: store.message,
+      });
     }
 
     setOpen(false);
+    setLoading(false);
+    clearRowIds();
+    router.refresh();
   };
 
   const handleOnOpenChange = (value: boolean) => {
@@ -92,6 +121,7 @@ export const DataTable: React.FC<Props> = ({ data }) => {
     if (deleteRowId) {
       handleDeleteStore(deleteRowId);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deleteRowId]);
 
   return (

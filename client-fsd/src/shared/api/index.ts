@@ -1,3 +1,3 @@
-import ApiRequest from './axios';
+import axios from './axios';
 
-export { ApiRequest };
+export { axios };

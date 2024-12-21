@@ -4,8 +4,49 @@ import ApiError from '../error/ApiError';
 import { $Enums, User } from '@prisma/client';
 import { deleteProperties, generateJwt, vefiryJwt, dateInISO, hashPassword, comparePassword } from '../lib';
 import { TUserResponse, TUserUpdate } from '../types';
+import { TUserLoginResponse } from '../src/types/User';
 
 const defaultRole = $Enums.Role.USER;
+
+
+// #region Common Functions 
+
+function createResponseUser(user: User) {
+  const accessToken = generateJwt({ userId: user.id, email: user.email, role: user.role }, 'access');
+  const refreshToken = generateJwt({ userId: user.id, email: user.email, role: user.role }, 'refresh');
+
+  const response: TUserLoginResponse<'id' | 'email' | 'role'> = {
+    user: {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    },
+    access_token: accessToken,
+    refresh_token: refreshToken,
+  };
+
+  return response;
+};
+
+async function createUserInDB(email: string, password?: string, oauthId?: string, role = defaultRole) {
+  const hashedPassword = password ? await hashPassword(password): undefined;
+
+  const user = await prisma.user.create({
+    data: {
+      email,
+      password: password && hashedPassword,
+      oauthId: oauthId && oauthId,
+      role,
+    }
+  });
+
+  const response = createResponseUser(user);
+
+  return response;
+};
+
+// #endregion
+
 
 class UserService {
   async registration(email: string, password: string, role = defaultRole) {
@@ -14,38 +55,23 @@ class UserService {
       throw ApiError.badRequest('No email or password provided');
     }
 
-    const userToCreate = await prisma.user.findUnique({
+    const isUserExist = await prisma.user.findUnique({
       where: {
         email
       }
     });
 
-    if (userToCreate) {
+    if (isUserExist) {
       throw ApiError.alreadyExist('Email is used. Please provide another email');
-    }
-
-    const hashedPassword = await hashPassword(password);
+    };
     
-    const user = await prisma.user.create({
-      data: {
-        email,
-        password: hashedPassword,
-        role,
-      }
-    });
+    try {
+      const user = await createUserInDB(email, password, role);
 
-    const jwtTokenAccess = generateJwt({ userId: user.id, email: user.email, role: user.role });
-    const jwtTokenRefresh = generateJwt({ userId: user.id, email: user.email, role: user.role }, 'refresh');
-
-    return {
-      user: {
-        id: user.id,
-        email: user.email,
-        role: user.role,
-      },
-      access_token: jwtTokenAccess,
-      refresh_token: jwtTokenRefresh,
-    } as TUserResponse;
+      return user;
+    } catch (error) {
+      throw ApiError.internal('Error caused by internal fault.');
+    }
   }
 
   async login(email: string, password: string) {
@@ -65,31 +91,9 @@ class UserService {
       throw ApiError.forbidden('Password is incorrect');
     }
 
-    const accessToken = generateJwt({ userId: user.id, email: user.email, role: user.role }, 'access');
-    const refreshToken = generateJwt({ userId: user.id, email: user.email, role: user.role }, 'refresh');
+    const response = createResponseUser(user);
 
-    const userResponse = deleteProperties<User>(
-      user,
-      ['password', 'name', 'adress', 'createdAt', 'phonenum', 'updatedAt'],
-    );
-
-    // const cart = await prisma.basket.findUnique({
-    //   where: {
-    //     userId: user.id
-    //   }
-    // });
-
-    // const wishlist = await prisma.wishlist.findUnique({
-    //   where: {
-    //     userId: user.id
-    //   }
-    // });
-
-    return {
-      user: userResponse,
-      access_token: accessToken,
-      refresh_token: refreshToken,
-    } as TUserResponse;
+    return response;
   }
 
   async loginOAuth(email: string, id: string) {
@@ -100,72 +104,19 @@ class UserService {
       }
     });
 
-    if (!user) {
-      const user = await prisma.user.create({
-        data: {
-          email,
-          role: defaultRole,
-          oauthId: id,
-        }
-      });
-  
-      await prisma.basket.create({
-        data: {
-          userId: user.id,
-        }
-      });
-  
-      await prisma.wishlist.create({
-        data: {
-          userId: user.id,
-        }
-      });
+    try {
+      if (!user) {
+        const user = await createUserInDB(email, undefined, id);
 
-      const userResponse = deleteProperties(
-        user,
-        ['password', 'name', 'adress', 'createdAt', 'phonenum', 'updatedAt'],
-      );
+        return user;
+      }
 
-      const accessToken = generateJwt({
-        userId: userResponse.id,
-        email,
-        role: userResponse.role,
-      }, 'access');
-      const refreshToken = generateJwt({
-        userId: userResponse.id,
-        email,
-        role: userResponse.role,
-      }, 'refresh');
+      const response = createResponseUser(user);
 
-      return {
-        user: userResponse,
-        access_token: accessToken,
-        refresh_token: refreshToken,
-      } as TUserResponse;
-
+      return response;
+    } catch (error) {
+      throw ApiError.internal('Error caused by internal fault.');
     }
-
-    const userResponse = deleteProperties(
-      user,
-      ['password', 'name', 'adress', 'createdAt', 'phonenum', 'updatedAt'],
-    );
-
-    const accessToken = generateJwt({
-      userId: userResponse.id,
-      email,
-      role: userResponse.role,
-    }, 'access');
-    const refreshToken = generateJwt({
-      userId: userResponse.id,
-      email,
-      role: userResponse.role,
-    }, 'refresh');
-
-    return {
-      user: userResponse,
-      access_token: accessToken,
-      refresh_token: refreshToken,
-    } as TUserResponse;
   }
 
   async getProfile(id: string) {
@@ -179,7 +130,7 @@ class UserService {
       throw ApiError.forbidden('User is not found');
     }
 
-    const userResponse = deleteProperties<User>(
+    const userResponse = deleteProperties(
       user,
       ['password'],
     );
@@ -187,77 +138,70 @@ class UserService {
     return userResponse;
   }
 
-  async updateProfile(userUpdateData: TUserUpdate) {
-    const { id: dbUserId, password: dbUserPasswordHashed } = await prisma.user.findUnique({
+  async updateProfile(id: string, updateData: TUserUpdate) {
+    const { password: passwordFromDB } = await prisma.user.findUnique({
       where: {
-        id: userUpdateData.id,
+        id: +id,
       }
     });
 
     const {
-      id: updateUserId,
-      password: updateUserPassword,
-      newPassword: updateUserNewPassword
-    } = userUpdateData;
+      password: userPasswordCurrent,
+      newPassword: userPasswordNew
+    } = updateData;
 
-    const updateUserData = deleteProperties<TUserUpdate>(userUpdateData, ['id', 'newPassword', 'password']);
-    const dbUserPassword = dbUserPasswordHashed === '[null]' ? null : dbUserPasswordHashed;
+    const updateUserData = deleteProperties(updateData, ['id', 'newPassword', 'password']);
 
-    const currentDate = dateInISO();
-
-    if (dbUserPassword && updateUserNewPassword) {
-      const isValidPassword = bcrypt.compareSync(updateUserPassword, dbUserPasswordHashed);
+    if (passwordFromDB && userPasswordNew) {
+      const isValidPassword = bcrypt.compareSync(userPasswordCurrent, passwordFromDB);
 
       if (!isValidPassword) {
         throw ApiError.forbidden('Incorrect password. Please provide correct password again');
       }
 
-      const hashedNewPassword = await bcrypt.hash(updateUserNewPassword, 5);
+      const hashedNewPassword = await bcrypt.hash(userPasswordNew, 5);
 
       const req = await prisma.user.update({
         where: {
-          id: updateUserId,
+          id: +id,
         }, data: {
           ...updateUserData,
           password: hashedNewPassword,
-          updatedAt: currentDate
         }
       });
 
-      const userResponse = deleteProperties<User>(req, ['password', 'createdAt', 'updatedAt', 'role']);
+      const userResponse = deleteProperties(req, ['password', 'createdAt', 'updatedAt', 'role']);
 
       return userResponse;
     }
 
-    if (dbUserPassword && !updateUserNewPassword || !updateUserNewPassword) {
+    if (passwordFromDB && !userPasswordNew || !userPasswordNew) {
       const req = await prisma.user.update({
         where: {
-          id: updateUserId,
+          id: +id,
         }, data: {
           ...updateUserData,
-          updatedAt: currentDate
         }
       });
 
-      const userResponse = deleteProperties<User>(req, ['password', 'createdAt', 'updatedAt', 'role']);
+      const userResponse = deleteProperties(req, ['password', 'createdAt', 'updatedAt', 'role']);
 
       return userResponse;
     }
 
-    if (!dbUserPassword && updateUserNewPassword) {
-      const hashedNewPassword = await bcrypt.hash(updateUserNewPassword, 5);
+    if (!passwordFromDB && userPasswordNew) {
+      const hashedNewPassword = await bcrypt.hash(userPasswordNew, 5);
 
       const req = await prisma.user.update({
         where: {
-          id: updateUserId,
+          id: +id,
         }, data: {
           ...updateUserData,
           password: hashedNewPassword,
-          updatedAt: currentDate,
         }
       });
 
-      const userResponse = deleteProperties<User>(req, ['password', 'createdAt', 'updatedAt', 'role']);
+      const userResponse = deleteProperties(req, ['password', 'createdAt', 'updatedAt', 'role']);
 
       return userResponse;
     }

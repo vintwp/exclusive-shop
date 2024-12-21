@@ -1,18 +1,20 @@
-export function deleteProperties<T>(obj: T, keysToDelete: Array<keyof T>) {
-  const objectKeys = Object.keys(obj) as Array<keyof T>;
+export function deleteProperties<T extends Record<string, unknown>, K extends keyof T>(
+  obj: T,
+  keysToDelete: K[]
+): {
+  [P in Exclude<keyof T, K>]: T[P]
+} {
+  const res = {} as T;
 
-  const modifiedObject = objectKeys.reduce((acc, key) => {
-    if (keysToDelete.includes(key)) {
-      return acc;
+  for (const prop in obj) {
+    const key = prop as keyof T
+
+    if (!keysToDelete.includes(key as K)) {
+      res[prop] = obj[prop];
     }
+  };
 
-    acc[key as string] = obj[key];
-
-    return acc;
-
-  }, {});
-
-  return modifiedObject as Omit<T, keyof T>;
+  return res;
 }
 
 export function compareObjects(obj1: unknown, obj2: unknown) {

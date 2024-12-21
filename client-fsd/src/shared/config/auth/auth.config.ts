@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/indent */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable no-param-reassign */
 import { NextAuthConfig } from 'next-auth';
@@ -6,7 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 import Google from 'next-auth/providers/google';
 import Credentials from 'next-auth/providers/credentials';
 import { NextAuthError, ApiError } from '@/shared/models';
-import { ApiRequest } from '@/shared/api';
+import { axios } from '@/shared/api';
 import {
   AUTH_SECRET,
   LOGIN_REFRESH,
@@ -30,10 +29,10 @@ export const authConfig: NextAuthConfig = {
       },
       async authorize(credentials) {
         try {
-          const request = await ApiRequest.postData<
-            TResponseUser,
-            TCredentials
-          >(LOGIN_URL, { ...credentials } as TCredentials);
+          const request = await axios.postData<TResponseUser, TCredentials>(
+            LOGIN_URL,
+            { ...credentials } as TCredentials,
+          );
           const { user, access_token, refresh_token } = request;
 
           return {
@@ -68,17 +67,21 @@ export const authConfig: NextAuthConfig = {
         const { providerAccountId } = account;
 
         try {
-          const request = await ApiRequest.postData<
+          const request = await axios.postData<
             TResponseUser,
             TOAuthCredentials
           >(LOGIN_URL, {
-            email,
+            email: email || '',
             oAuthId: providerAccountId,
-          } as TOAuthCredentials);
+          });
 
           const { access_token, refresh_token, user: requestedUser } = request;
 
-          token.user = requestedUser;
+          token.user = {
+            id: requestedUser.id,
+            email: requestedUser.email,
+            role: requestedUser.role,
+          };
 
           return {
             ...token,
@@ -107,7 +110,7 @@ export const authConfig: NextAuthConfig = {
         accessTokenDecoded?.exp &&
         Date.now() >= accessTokenDecoded.exp * 1000
       ) {
-        const tokens = await ApiRequest.getData<RefreshedTokens>(
+        const tokens = await axios.getData<RefreshedTokens>(
           LOGIN_REFRESH,
           refresh_token,
         );

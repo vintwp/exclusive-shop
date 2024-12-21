@@ -1,12 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
-import {
-  Facebook,
-  Instagram,
-  SendHorizontal,
-  Twitter,
-  Linkedin,
-} from 'lucide-react';
+import { SendHorizontal } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '@/shared/lib';
 import { Button, Container, Input } from '@/shared/ui';

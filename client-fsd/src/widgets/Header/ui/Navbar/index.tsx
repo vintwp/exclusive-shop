@@ -12,7 +12,7 @@ export const Navbar: React.FC = () => {
 
   return (
     <nav>
-      <div className={cn('flex flex-row gap-12')}>
+      <div className={cn('flex flex-row gap-6 xl:gap-12')}>
         {navigation.map(link => (
           <Button
             variant="link"

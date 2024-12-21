@@ -6,8 +6,8 @@ import useEmblaCarousel, {
 } from 'embla-carousel-react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 
-import { cn } from '@/shared/lib';
-import { Button } from '@/shared/ui';
+import { cn } from '../../lib';
+import { Button } from '../Button';
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -115,6 +115,7 @@ const Carousel = React.forwardRef<
       api.on('reInit', onSelect);
       api.on('select', onSelect);
 
+      // eslint-disable-next-line consistent-return
       return () => {
         api?.off('select', onSelect);
       };
@@ -122,6 +123,7 @@ const Carousel = React.forwardRef<
 
     return (
       <CarouselContext.Provider
+        // eslint-disable-next-line react/jsx-no-constructed-context-values
         value={{
           carouselRef,
           api,

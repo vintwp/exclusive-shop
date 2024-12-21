@@ -5,7 +5,7 @@ import { auth, STORE_API } from '@/shared/config';
 import { ApiError, ResponseApi } from '@/shared/models';
 import { Store } from '../model';
 
-const createStore = async (name: string): Promise<ResponseApi<Store>> => {
+const createStore = async (name: string) => {
   const authSession = await auth();
 
   try {
@@ -18,36 +18,36 @@ const createStore = async (name: string): Promise<ResponseApi<Store>> => {
     return {
       ok: true,
       data: req,
-    };
+    } as ResponseApi<Store>;
   } catch (err) {
     const error = err as ApiError;
 
     return {
       status: error.status,
       message: error.message,
-    };
+    } as ResponseApi;
   }
 };
 
-const getStore = async (): Promise<ResponseApi<Store[]>> => {
+const getStore = async () => {
   try {
     const req = await axios.getData<Store[]>(STORE_API);
 
     return {
       ok: true,
       data: req,
-    };
+    } as ResponseApi<Store[]>;
   } catch (err) {
     const error = err as ApiError;
 
     return {
       status: error.status,
       message: error.message,
-    };
+    } as ResponseApi;
   }
 };
 
-const getStoreById = async (id: string): Promise<ResponseApi<Store>> => {
+const getStoreById = async (id: string) => {
   try {
     const req = await axios.getData<Store[]>(STORE_API);
 
@@ -56,25 +56,23 @@ const getStoreById = async (id: string): Promise<ResponseApi<Store>> => {
     return {
       ok: true,
       data: store,
-    };
+    } as ResponseApi<Store>;
   } catch (err) {
     const error = err as ApiError;
 
     return {
       status: error.status,
       message: error.message,
-    };
+    } as ResponseApi;
   }
 };
 
-const updateStore = async (
-  updatedStore: Pick<Store, 'id' | 'name'>,
-): Promise<ResponseApi<Store>> => {
+const updateStore = async (updatedStore: Pick<Store, 'id' | 'name'>) => {
   const authSession = await auth();
 
   try {
     const req = await axios.putData<Store>(
-      STORE_API,
+      `${STORE_API}/${updatedStore.id}`,
       updatedStore,
       authSession?.access_token,
     );
@@ -82,18 +80,18 @@ const updateStore = async (
     return {
       ok: true,
       data: req,
-    };
+    } as ResponseApi<Store>;
   } catch (err) {
     const error = err as ApiError;
 
     return {
       status: error.status,
       message: error.message,
-    };
+    } as ResponseApi;
   }
 };
 
-const deleteStore = async (id: string): Promise<ResponseApi<Store>> => {
+const deleteStore = async (id: string) => {
   const authSession = await auth();
 
   try {
@@ -106,14 +104,14 @@ const deleteStore = async (id: string): Promise<ResponseApi<Store>> => {
     return {
       ok: true,
       data: req,
-    };
+    } as ResponseApi<Store>;
   } catch (err) {
     const error = err as ApiError;
 
     return {
       status: error.status,
       message: error.message,
-    };
+    } as ResponseApi;
   }
 };
 

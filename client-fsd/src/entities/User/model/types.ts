@@ -13,7 +13,10 @@ type User = {
   updatedAt: string;
 };
 
-type UserUpdate = Omit<User, 'role' | 'createdAt' | 'updatedAt' | 'oauthId'> & {
+type UserUpdate = Omit<
+  User,
+  'id' | 'role' | 'createdAt' | 'updatedAt' | 'oauthId'
+> & {
   password?: string;
   newPassword?: string;
   newConfirmPassword?: string;

@@ -1,10 +1,10 @@
 import React from 'react';
 import { getRole } from '@/entities/User';
-import { AccountSidebarLink } from './AccountSidebarLink';
+import { ProfileSidebarLink } from './ProfileSidebarLink';
 
 type Props = {};
 
-export const AccountSidebar: React.FC<Props> = async () => {
+export const ProfileSidebar: React.FC<Props> = async () => {
   const role = await getRole();
 
   return (
@@ -12,11 +12,11 @@ export const AccountSidebar: React.FC<Props> = async () => {
       <div className="flex flex-col gap-4">
         <h4 className="font-semibold">Manage My Account</h4>
         <div className="flex flex-col items-start gap-2 pl-5">
-          <AccountSidebarLink
+          <ProfileSidebarLink
             href="/profile"
             name="Profile"
           />
-          <AccountSidebarLink
+          <ProfileSidebarLink
             href="/profile/payment"
             name="Payment Options"
           />
@@ -25,22 +25,22 @@ export const AccountSidebar: React.FC<Props> = async () => {
       <div className="flex flex-col gap-4">
         <h4 className="font-semibold">My Orders</h4>
         <div className="flex flex-col items-start gap-2 pl-5">
-          <AccountSidebarLink
+          <ProfileSidebarLink
             href="/orders"
             name="Orders"
           />
-          <AccountSidebarLink
+          <ProfileSidebarLink
             href="/returns"
             name="Returns"
           />
-          <AccountSidebarLink
+          <ProfileSidebarLink
             href="/cancellations"
             name="Cancellations"
           />
         </div>
       </div>
       <div>
-        <AccountSidebarLink
+        <ProfileSidebarLink
           href="/wishlist"
           name="My Wishlist"
           className="font-semibold text-black"
@@ -51,23 +51,23 @@ export const AccountSidebar: React.FC<Props> = async () => {
         <div className="flex flex-col gap-4">
           <h4 className="font-semibold">Admin</h4>
           <div className="flex flex-col items-start gap-2 pl-5">
-            <AccountSidebarLink
+            <ProfileSidebarLink
               href="/profile/admin/store"
               name="Store"
             />
-            <AccountSidebarLink
+            <ProfileSidebarLink
               href="/profile/admin/category"
               name="Category"
             />
-            <AccountSidebarLink
+            <ProfileSidebarLink
               href="/profile/admin/brand"
               name="Brand"
             />
-            <AccountSidebarLink
+            <ProfileSidebarLink
               href="/profile/admin/users"
               name="Users"
             />
-            <AccountSidebarLink
+            <ProfileSidebarLink
               href="/profile/admin/item"
               name="Item"
             />

@@ -1,11 +1,11 @@
 'use server';
 
 import axios from '@/shared/api/axios';
-import { auth, USER_UPDATE_PROFILE } from '@/shared/config';
-import { ApiError, ApiResponse } from '@/shared/models';
+import { auth, USER_API } from '@/shared/config';
+import { ApiError, ResponseApi } from '@/shared/models';
 import { User, UserUpdate } from '../model';
 
-const updateUser = async (userUpdated: UserUpdate) => {
+const updateUser = async (id: string, userUpdated: UserUpdate) => {
   const authSession = await auth();
 
   if (authSession) {
@@ -13,29 +13,30 @@ const updateUser = async (userUpdated: UserUpdate) => {
 
     try {
       const req = await axios.postData<User, UserUpdate>(
-        USER_UPDATE_PROFILE,
+        `${USER_API}/${id}`,
         userUpdated,
         accessToken,
       );
 
       return {
-        status: 'ok',
+        ok: true,
         data: req,
-      } as ApiResponse<'success', User>;
+        message: 'You profile has been successfully updated',
+      } as ResponseApi<User>;
     } catch (err) {
       const error = err as ApiError;
 
       return {
-        status: 'error',
+        status: error.status,
         message: error.message,
-      } as ApiResponse<'error'>;
+      } as ResponseApi;
     }
   }
 
   return {
-    status: 'error',
-    message: 'Unexpected Error',
-  } as ApiResponse<'error'>;
+    status: 400,
+    message: 'Unexpected error',
+  } as ResponseApi;
 };
 
 export { updateUser };

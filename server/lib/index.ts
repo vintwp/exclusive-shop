@@ -9,6 +9,7 @@ import {
 import { convertIdToString } from './convertIdToString';
 import { saveFiles, deleteFiles, updateFiles } from "./fileHandlers";
 import { hashPassword, comparePassword } from "./passwordHandler";
+import { extractDataForSearchLibrary } from "./extractDataForSearchLibrary";
 
 export {
   generateJwt,
@@ -23,5 +24,6 @@ export {
   isTrueSet,
   createUrl,
   hashPassword,
-  comparePassword
+  comparePassword,
+  extractDataForSearchLibrary
 };
