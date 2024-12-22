@@ -85,16 +85,20 @@ export const Search: React.FC<Props> = ({ handleSearch }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div>
+        <div className="flex w-full justify-end">
           {/* search string as button for large devices */}
           <Button
             variant="default"
-            className={cn(searchButtonStyle, 'hidden md:flex')}
+            className={cn(
+              searchButtonStyle,
+              'hidden md:flex',
+              'overflow-hidden',
+            )}
           >
-            <span className="text-xs text-black/50">
-              What are you looking for?
+            <span className="truncate text-xs text-black/50">
+              {debouncedQuery || 'What are you looking for?'}
             </span>
-            <IconSearch />
+            <IconSearch className="flex-shrink-0" />
           </Button>
 
           {/* button search  for small devices */}
@@ -118,8 +122,9 @@ export const Search: React.FC<Props> = ({ handleSearch }) => {
             placeholder="What are you looking for?"
             className="min-w-[1px] border-none bg-clr-secondary-2"
             onChange={handleQueryChange}
+            value={query}
           />
-          <div className="absolute mt-2 w-full bg-clr-secondary-2 px-3 md:rounded-md">
+          <div className="absolute mt-2 w-full overflow-hidden bg-clr-secondary-2 md:rounded-md">
             <SearchList
               query={debouncedQuery}
               items={searchResult}

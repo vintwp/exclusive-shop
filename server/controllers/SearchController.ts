@@ -23,12 +23,15 @@ class SearchController {
       }
     })
 
-    console.log(preparedResultData);
-    console.log('---------------------');
+    setTimeout(() => {
+      return res.json({
+        data: preparedResultData,
+      });
+    }, 5000)
 
-    return res.json({
-      data: preparedResultData,
-    });
+    // return res.json({
+    //   data: preparedResultData,
+    // });
   }
 }
 

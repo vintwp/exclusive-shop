@@ -23,7 +23,7 @@ export const Header: React.FC = async () => {
             <Navbar />
           </div>
           <div className="flex w-full max-w-[33%] items-center justify-end gap-2 lg:gap-4">
-            <GlobalSearch className="flex flex-1 justify-end" />
+            <GlobalSearch className="flex flex-1 overflow-hidden" />
             <div className="flex md:hidden">
               <MobileNavigation />
             </div>
