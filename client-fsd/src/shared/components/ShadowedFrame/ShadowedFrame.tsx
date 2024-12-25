@@ -9,7 +9,10 @@ type Props = {
 export const ShadowedFrame: React.FC<Props> = ({ children, className }) => {
   return (
     <div
-      className={cn('rounded px-8 py-5 shadow lg:px-20 lg:py-10', className)}
+      className={cn(
+        'relative h-full rounded px-8 py-5 shadow lg:px-20 lg:py-10',
+        className,
+      )}
     >
       {children}
     </div>

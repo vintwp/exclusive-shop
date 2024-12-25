@@ -1,4 +1,12 @@
-import { Category, PrismaClient, Store, Brand } from "@prisma/client";
+import {
+  Category,
+  PrismaClient,
+  Store,
+  Brand,
+  Item,
+  ItemGroup,
+  ItemImage,
+} from "@prisma/client";
 import { User } from "@prisma/client";
 import { hashPassword } from "../lib";
 
@@ -7,7 +15,10 @@ const prisma = new PrismaClient();
 type TInitialUsers = Array<Omit<User, 'id' | 'updatedAt' | 'createdAt'>>;
 type TinitialStores = Array<Omit<Store, 'updatedAt' | 'createdAt'>>;
 type TinitialCategories = Array<Omit<Category, 'updatedAt' | 'createdAt'> & { additionalStores?: number[]}>;
-type TinitialBrands = Array<Omit<Brand, 'updatedAt' | 'createdAt'> & { categories: number[]}>;
+type TinitialBrands = Array<Omit<Brand, 'updatedAt' | 'createdAt'> & { categories: number[] }>;
+type TInitialItems = Array<Omit<Item, 'id' | 'updatedAt' | 'createdAt' | 'itemGroupId'>  & { itemGroupName: string }>;
+type TInitialItemGroups = Array<Omit<ItemGroup, 'updatedAt' | 'createdAt'>>;
+type TInitialItemImages = Array<Omit<ItemImage, 'updatedAt' | 'createdAt'>>;
 
 
 const initialUsers: TInitialUsers = [
@@ -228,7 +239,46 @@ const initialBrands: TinitialBrands = [
     image: 'brands/xiaomi.png',
     categories: [1, 2, 4, 7, 8]
   },
-]
+];
+
+// Create items and relation tables
+
+const intialItemGroups: TInitialItemGroups = [
+  {
+    id: 1,
+    name: 'apple-iphone-16-pro-max',
+    optionKeys: ['color', 'storage'],
+  }
+];
+
+const initialItemImages: TInitialItemImages = [
+  {
+    id: 1,
+    images: [
+      'apple-iphone-16-pro-max-black-titanium.jpg',
+      'apple-iphone-16-pro-max-black-titanium-2.jpg',
+      'apple-iphone-16-pro-max-black-titanium-3.jpg',
+      'apple-iphone-16-pro-max-black-titanium-4.jpg'
+    ],
+    itemId: 1,
+  }
+];
+
+const initialItems: TInitialItems = [
+  {
+    name: 'Apple Iphone 16 Pro Max 256Gb Black Titanium',
+    url: 'apple-iphone-16-pro-max-256gb-black-titanium',
+    brandId: 2,
+    categoryId: 1,
+    storeId: 1,
+    price: 1199,
+    priceDiscount: 1199,
+    ourItem: false,
+    itemGroupName: 'apple-iphone-16-pro-max',
+  }
+];
+
+// https://www.apple.com/shop/buy-iphone/iphone-16-pro
 
 const seed = async () => {
 
@@ -260,16 +310,17 @@ const seed = async () => {
     }
   });
 
-  // await prisma.brand.deleteMany({
-  //   where: {
-  //     stores: {
-  //       none: {}
-  //     },
-  //     categories: {
-  //       none: {}
-  //     }
-  //   }
-  // })
+  // item relation tables
+
+  await prisma.itemGroup.deleteMany({
+    where: {
+      items: {
+        none: {},
+      }
+    }
+  });
+
+  await prisma.itemImage.deleteMany();
 
   // creating users
   for (const user of initialUsers) {
@@ -344,41 +395,44 @@ const seed = async () => {
     })
   }
 
+  // creating items
 
-
-  // for (const brand of initialBrands) {
-  //   await prisma.brand.create({
-  //     data: {
-  //       name: brand.name,
-  //       url: brand.url,
-  //       image: brand.image,
-  //       stores: {
-  //         create:
-  //           brand.storeId.map(v => {
-  //             return {
-  //               store: {
-  //                 connect: {
-  //                   id: v
-  //                 }
-  //               }
-  //             }
-  //           })
-  //       },
-  //       categories: {
-  //         create:
-  //           brand.categoryId.map(v => {
-  //             return {
-  //               category: {
-  //                 connect: {
-  //                   id: v
-  //                 }
-  //               }
-  //             }
-  //           })
-  //       }
-  //     }
-  //   })
-  // };
+  for (const item of initialItems) {
+    await prisma.item.create({
+      data: {
+        name: item.name,
+        url: item.url,
+        brand: {
+          connect: {
+            id: item.brandId,
+          }
+        },
+        category: {
+          connect: {
+            id: item.categoryId,
+          }
+        },
+        store: {
+          connect: {
+            id: item.storeId,
+          }
+        },
+        price: item.price,
+        priceDiscount: item.priceDiscount,
+        ourItem: item.ourItem,
+        itemGroup: {
+          connectOrCreate: {
+            where: {
+              name: item.itemGroupName,
+            },
+            create: {
+              name: item.itemGroupName,
+            },
+          },
+        },
+      },
+    })
+  }
 
 }
 

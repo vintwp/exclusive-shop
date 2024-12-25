@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Spinner } from '@/shared/ui';
+import { Button } from '@/shared/ui';
 import React from 'react';
 import Link from 'next/link';
 import { useLocalStorage } from '@/shared/hooks';
@@ -8,7 +8,6 @@ import { useRouter } from 'next/navigation';
 import { X } from 'lucide-react';
 import { cn } from '@/shared/lib';
 import { Overlay } from '@/shared/components';
-import { relative } from 'path';
 import { TSearch } from '../models/TSearch';
 
 type Props = {

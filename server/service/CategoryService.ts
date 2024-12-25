@@ -73,22 +73,26 @@ class CategoryService {
       },
       data: {
         name: category.name,
-        primaryStoreId: +category.primaryStoreId,
+        primaryStore: {
+          connect: {
+            id: +category.primaryStoreId
+          }
+        },
         displayOnMainPage: category.displayOnMainPage,
         image: category.image,
         url: createUrl(category.name),
         additionalStores: {
           deleteMany: {},
           create:
-          category.additionalStoreId.map(v => {
-            return {
-              store: {
-                connect: {
-                  id: +v
+            category.additionalStoreId.map(v => {
+              return {
+                store: {
+                  connect: {
+                    id: +v
+                  }
                 }
               }
-            }
-          })
+            })
         }
       },
       select: {

@@ -8,11 +8,7 @@ class SearchController {
   ) {
     const query = req.query.query as string;
     
-    console.log(query);
-
     const searchResult = await SearchService.getSeach(query);
-
-    console.log(searchResult);
 
     const preparedResultData = searchResult.map(item => {
       const { id, name, url } = item.item;
@@ -23,15 +19,9 @@ class SearchController {
       }
     })
 
-    setTimeout(() => {
-      return res.json({
-        data: preparedResultData,
-      });
-    }, 5000)
-
-    // return res.json({
-    //   data: preparedResultData,
-    // });
+    return res.json({
+      data: preparedResultData,
+    });
   }
 }
 

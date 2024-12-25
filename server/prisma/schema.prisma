@@ -7,14 +7,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  ADMIN
+  USER
+}
 
-// store
+// default image - no-image.webp
+
+// #region store
 model Store {
   id                      Int        @id @default(autoincrement()) @map("store_id")
   name                    String     @map("store_name") @unique
   url                     String     @map("store_url")
   primaryCategories       Category[]
   additionalCategories    StoreCategories[]
+  items                   Item[]
   createdAt               DateTime   @default(now()) @map("created_at")
   updatedAt               DateTime   @updatedAt @map("updated_at")
 }
@@ -30,9 +37,9 @@ model StoreCategories {
 
   @@map("_store-categories")
 }
+// #endregion
 
-
-// category
+// #region category
 model Category {
   id                Int      @id @default(autoincrement()) @map("category_id")
   name              String   @map("category_name") @unique
@@ -40,10 +47,10 @@ model Category {
   primaryStore      Store    @relation(fields: [primaryStoreId], references: [id], onDelete: Restrict, onUpdate: Cascade)
   additionalStores  StoreCategories[]
   brands            CategoryBrands[]
+  items             Item[]
   displayOnMainPage Boolean  @default(false) @map("display_on_main_page")
   image             String   @map("category_logo")
   url               String   @map("category_url")
-  item              Item[]   @relation("CategoryToItem")
   createdAt         DateTime @default(now()) @map("created_at")
   updatedAt         DateTime @updatedAt @map("updated_at")
 }
@@ -59,102 +66,127 @@ model CategoryBrands {
 
   @@map("_category-brands")
 }
+// #endregion
 
-
-// brand
+// #region brand
 model Brand {
   id         Int      @id @default(autoincrement())
   name       String   @map("brand_name")
   url        String   @map("brand_url")
   image      String   @map("brand_logo")
   categories CategoryBrands[]
+  items      Item[]
   createdAt  DateTime   @default(now()) @map("created_at")
   updatedAt  DateTime   @updatedAt @map("updated_at")
 }
+// #endregion
+
+// #region item
 
 model Item {
-  id                Int                 @id @default(autoincrement())
-  name              String
-  price             Decimal
-  stock             Int
-  rating            Int
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
-  cartItem          CartItem[]
-  itemImage         ItemImage[]
-  itemSpecification ItemSpecification[]
-  wishlistItem      WishlistItem[]
-  type              Category[]          @relation("CategoryToItem")
+  id            Int @id @default(autoincrement())
+  name          String @unique
+  url           String
+  brand         Brand @relation(fields: [brandId], references: [id]) 
+  brandId       Int
+  category      Category @relation(fields: [categoryId], references: [id]) 
+  categoryId    Int
+  store         Store @relation(fields: [storeId], references: [id]) 
+  storeId       Int
+  price         Int
+  priceDiscount Int
+  ourItem       Boolean @default(false) @map("our_item")
+  itemGroup     ItemGroup @relation(fields: [itemGroupId], references: [id])
+  itemGroupId   Int @map("item_group_key")
+  images        ItemImage?
+  specification ItemSpec?
+  text          ItemText?
+  forSale       ItemForSales?
+  bestSeller    ItemsBestSellers?
+  itemStock     ItemStock?
+  createdAt     DateTime   @default(now()) @map("created_at")
+  updatedAt     DateTime   @updatedAt @map("updated_at")
 }
 
-model WishlistItem {
-  id         Int      @id @default(autoincrement())
-  itemId     Int
-  wishlistId Int
-  item       Item     @relation(fields: [itemId], references: [id])
-  wishlist   Wishlist @relation(fields: [wishlistId], references: [id])
-}
-
-model CartItem {
-  id     Int  @id @default(autoincrement())
-  itemId Int
-  cartId Int
-  cart   Cart @relation(fields: [cartId], references: [id])
-  item   Item @relation(fields: [itemId], references: [id])
-}
-
-model ItemSpecification {
-  id      Int     @id @default(autoincrement())
-  name    String
-  value   String
-  groupBy Boolean @default(false)
-  itemId  Int
-  item    Item    @relation(fields: [itemId], references: [id])
+model ItemGroup {
+  id          Int @id @default(autoincrement())
+  name        String @unique @map("group_key")
+  optionKeys  String[]
+  items       Item[]
+  createdAt     DateTime   @default(now()) @map("created_at")
+  updatedAt     DateTime   @updatedAt @map("updated_at")
+	@@map("item_group")
 }
 
 model ItemImage {
-  id     Int    @id @default(autoincrement())
-  value  String
-  itemId Int
-  item   Item   @relation(fields: [itemId], references: [id])
+  id          Int @id @default(autoincrement())
+  images      String[] @default(["no-image.webp"])
+  item        Item  @relation(fields: [itemId], references: [id])
+  itemId      Int   @unique
+  createdAt     DateTime   @default(now()) @map("created_at")
+  updatedAt     DateTime   @updatedAt @map("updated_at")
+	@@map("item_image")
 }
 
-model Wishlist {
-  id           Int            @id @default(autoincrement())
-  name         String
-  userId       Int            @unique
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  user         User           @relation(fields: [userId], references: [id])
-  wishlistItem WishlistItem[]
+model ItemSpec {
+  id              Int @id @default(autoincrement())
+  specification   Json? @map("specs")
+  item            Item?  @relation(fields: [itemId], references: [id])
+  itemId          Int?   @unique
+  @@map("item_specification")
 }
 
-model Cart {
-  id        Int        @id @default(autoincrement())
-  name      String
-  userId    Int        @unique
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  user      User       @relation(fields: [userId], references: [id])
-  cartItem  CartItem[]
+model ItemText {
+  id      Int @id @default(autoincrement())
+  text    Json?
+  item    Item?  @relation(fields: [itemId], references: [id])
+  itemId  Int?   @unique
+
+  @@map("item_text")
 }
+
+model ItemForSales {
+  id      Int   @id @default(autoincrement())
+  item    Item  @relation(fields: [itemId], references: [id])
+  itemId  Int   @unique 
+
+  @@map("items_for_sales")
+}
+
+model ItemStock {
+  id        Int   @id @default(autoincrement())
+  stockQty  Int   @default(0)
+  item      Item  @relation(fields: [itemId], references: [id])
+  itemId    Int   @unique
+
+  @@map("item_stock")
+}
+
+model ItemsBestSellers {
+  id  Int @id @default(autoincrement())
+  item    Item  @relation(fields: [itemId], references: [id])
+  itemId  Int   @unique
+
+  @@map("items_best_sellers")
+}
+
+// #endregion
+
+// #region user
 
 model User {
   id        Int       @id @default(autoincrement())
   oauthId   String?   @unique
   email     String    @unique
   password  String?
-  name      String?
-  lastName  String?
+  name      String?   @map("first_name")
+  lastName  String?   @map("last_name")
   adress    String?
   role      Role      @default(USER)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  cart      Cart?
-  wishlist  Wishlist?
 }
 
-enum Role {
-  ADMIN
-  USER
-}
+// #endregion
+
+

@@ -17,7 +17,6 @@ import { Search as IconSearch } from 'lucide-react';
 import { cn } from '@/shared/lib';
 import { useDebounce } from 'use-debounce';
 import { SearchList } from './SearchList';
-import { getSearchResult } from '../api';
 import { TSearch } from '../models/TSearch';
 
 // #region Trigger and Close Button Styles
