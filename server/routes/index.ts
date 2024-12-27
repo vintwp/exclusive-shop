@@ -5,6 +5,7 @@ import categoryRouter from './categoryRouter';
 import deviceRouter from './deviceRouter';
 import storeRouter from './storeRouter';
 import searchRouter from './searchRouter';
+import itemRouter from './itemRouter';
 
 const router = Router();
 
@@ -14,5 +15,6 @@ router.use('/category', categoryRouter);
 router.use('/brand', brandRouter);
 router.use('/device', deviceRouter);
 router.use('/search', searchRouter);
+router.use('/item', itemRouter);
 
 export default router;

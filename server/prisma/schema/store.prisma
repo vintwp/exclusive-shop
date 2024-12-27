@@ -1,0 +1,25 @@
+// #region store
+model Store {
+  id                      Int        @id @default(autoincrement()) @map("store_id")
+  name                    String     @map("store_name") @unique
+  url                     String     @map("store_url")
+  primaryCategories       Category[]
+  additionalCategories    StoreCategories[]
+  createdAt               DateTime   @default(now()) @map("created_at")
+  updatedAt               DateTime   @updatedAt @map("updated_at")
+
+  @@map("store")
+}
+
+model StoreCategories {
+  storeId       Int @map("store_id")
+  categoryId    Int @map("category_id")
+  store         Store @relation(fields: [storeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  category      Category @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  assignedAt    DateTime @default(now()) @map("assigned_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@map("_store-categories")
+  @@id(fields: [storeId, categoryId])
+}
+// #endregion

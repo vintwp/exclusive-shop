@@ -4,6 +4,7 @@ import DeviceService from "./DeviceService";
 import UserService from "./UserService";
 import StoreService from "./StoreService";
 import SearchService from "./SearchService";
+import ItemService from './ItemService';
 
 export {
   UserService,
@@ -11,5 +12,6 @@ export {
   BrandService,
   CategoryService,
   DeviceService,
-  SearchService
+  SearchService,
+  ItemService
 };

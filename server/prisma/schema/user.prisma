@@ -1,0 +1,18 @@
+// #region user
+
+model User {
+  id        Int       @id @default(autoincrement())
+  oauthId   String?   @unique
+  email     String    @unique
+  password  String?
+  name      String?   @map("first_name")
+  lastName  String?   @map("last_name")
+  adress    String?
+  role      Role      @default(USER)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("user")
+}
+
+// #endregion

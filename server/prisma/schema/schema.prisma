@@ -1,0 +1,159 @@
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["prismaSchemaFolder"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+// default image - no-image.webp
+
+
+// #region item
+
+model Item {
+  id            Int @id @default(autoincrement()) 
+  name          String
+  url           String
+  price         Int
+  priceDiscount Int
+  ourItem       Boolean @default(false) @map("our_item")
+  category      Category @relation(fields: [categoryId], references: [id]) 
+  categoryId    Int
+  brand         Brand @relation(fields: [brandId], references: [id]) 
+  brandId       Int
+  itemGroup     ItemGroup? @relation(fields: [itemGroupId], references: [id])
+  itemGroupId   Int? @map("item_group_key")
+  itemStock     ItemStock?
+  itemImage     ItemImage? @relation(fields: [itemImageId], references: [id])
+  itemImageId   Int? @map("item_image_url")
+  forSale       ItemForSales?
+  bestSeller    ItemsBestSellers?
+  itemSpecification ItemSpec?
+
+  createdAt     DateTime   @default(now()) @map("created_at")
+  updatedAt     DateTime   @updatedAt @map("updated_at")
+  
+  @@map("item")
+}
+
+model Item2 {
+  id            Int @id @default(autoincrement()) 
+  name          String @unique
+  url           String
+  // brand         Brand? @relation(fields: [brandId], references: [id]) 
+  // brandId       Int?
+  // category      Category? @relation(fields: [categoryId], references: [id]) 
+  // categoryId    Int?
+  // store         Store? @relation(fields: [storeId], references: [id]) 
+  // storeId       Int?
+  // price         Int
+  // priceDiscount Int
+  // ourItem       Boolean @default(false) @map("our_item")
+  // itemGroup     ItemGroup? @relation(fields: [itemGroupId], references: [id])
+  // itemGroupId   Int? @map("item_group_key")
+  // images        ItemImage?
+  // specification ItemSpec?
+  text          ItemText?
+  // forSale       ItemForSales?
+  // bestSeller    ItemsBestSellers?
+  // itemStock     ItemStock?
+  createdAt     DateTime   @default(now()) @map("created_at")
+  updatedAt     DateTime   @updatedAt @map("updated_at")
+
+  @@map("item_2")
+}
+
+model ItemStock {
+  id        Int   @id @default(autoincrement())
+  stockQty  Int   @default(0)
+  item      Item  @relation(fields: [itemId], references: [id])
+  itemId    Int   @unique
+
+  @@map("item_stock")
+}
+
+model ItemGroup {
+  id            Int @id @default(autoincrement())
+  name          String @unique @map("group_key")
+  optionKeys    String[]
+  items         Item[]
+  createdAt     DateTime   @default(now()) @map("created_at")
+  updatedAt     DateTime   @updatedAt @map("updated_at")
+	@@map("item_group")
+}
+
+model ItemOption {
+  id            Int @id @default(autoincrement())
+  optionName    String
+  optionValue   ItemOptionValue[]
+  createdAt     DateTime   @default(now()) @map("created_at")
+  updatedAt     DateTime   @updatedAt @map("updated_at")
+	@@map("item_option")
+}
+
+
+model ItemOptionValue {
+  id            Int @id @default(autoincrement())
+  optionValue   String
+  option        ItemOption @relation(fields: [optionId],references: [id])
+  optionId      Int
+  createdAt     DateTime   @default(now()) @map("created_at")
+  updatedAt     DateTime   @updatedAt @map("updated_at")
+	@@map("item_option_value")
+}
+
+model ItemImage {
+  id          Int @id @default(autoincrement())
+  images      String[] @map("image_url")
+  item        Item[]
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+	@@map("item_image")
+}
+
+model ItemSpec {
+  id              Int @id @default(autoincrement())
+  specification   Json @map("item_specs")
+  item            Item  @relation(fields: [itemId], references: [id])
+  itemId          Int   @unique
+  @@map("item_specification")
+}
+
+model ItemText {
+  id      Int @id @default(autoincrement())
+  text    Json?
+  item    Item2?  @relation(fields: [itemId], references: [id])
+  itemId  Int?   @unique
+
+  @@map("item_text")
+}
+
+model ItemForSales {
+  id      Int   @id @default(autoincrement())
+  item    Item  @relation(fields: [itemId], references: [id])
+  itemId  Int   @unique 
+
+  @@map("items_for_sales")
+}
+
+model ItemsBestSellers {
+  id      Int   @id @default(autoincrement())
+  item    Item  @relation(fields: [itemId], references: [id])
+  itemId  Int   @unique
+
+  @@map("items_best_sellers")
+}
+
+// #endregion
+
+
+
+

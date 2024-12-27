@@ -1,0 +1,12 @@
+model Brand {
+  id         Int      @id @default(autoincrement())
+  name       String   @map("brand_name")
+  url        String   @map("brand_url")
+  image      String   @map("brand_logo")
+  categories CategoryBrands[]
+  items      Item[]
+  createdAt  DateTime   @default(now()) @map("created_at")
+  updatedAt  DateTime   @updatedAt @map("updated_at")
+
+  @@map("brand")
+}
