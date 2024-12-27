@@ -64,12 +64,15 @@ class ItemService {
           }
         },
         forSale: true,
-        bestSeller: true
+        bestSeller: true,
+        itemSpecification: {
+          select: {
+            specification: true
+          }
+        }
       }
     });
-
-    console.log(req)
-    
+   
     return { data: req };
   }
 
