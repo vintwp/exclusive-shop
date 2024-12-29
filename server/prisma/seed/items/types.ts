@@ -1,3 +1,4 @@
+import { ItemOptionParameter } from "@prisma/client";
 
 type Specification = {
   [k in string]: string;
@@ -5,7 +6,11 @@ type Specification = {
 
 type TItemGroup = {
   groupName: string;
-  optionKeys: string[];
+  optionKeys: ItemOptionParameter[];
+}
+
+type TItemOption = {
+  [k in ItemOptionParameter]?: string;
 }
 
 type TInitialItemGroups = {
@@ -28,7 +33,8 @@ type TinitialItems = {
   price: number;
   priceDiscount: number;
   ourItem: boolean;
-  itemGroup: TItemGroup;
+  groupKey: string;
+  groupOptions: TItemOption;
   itemImages?: string[];
   stockQty?: number;
   forSale?: boolean;
@@ -37,4 +43,4 @@ type TinitialItems = {
 
 }
 
-export type { Specification, TInitialItemGroups, TInitialItemImages, TinitialItems }
+export type { Specification, TInitialItemGroups, TInitialItemImages, TinitialItems, TItemOption }

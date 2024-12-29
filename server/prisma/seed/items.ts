@@ -1,7 +1,7 @@
 import { prisma } from "./prismaClient";
-import type { Specification } from "./items/types";
 
-import initialItems  from "./items/index";
+import initialItems from "./items/index";
+import { TItemOption } from './items/types';
 
 function getPropertyCaseInsensitive<
   T extends Record<string, string>,
@@ -15,71 +15,91 @@ function getPropertyCaseInsensitive<
 
 
 export async function createItems() {
-  await prisma.itemGroup.deleteMany({
-    where: {}
-  });
-  
-
   await prisma.itemImage.deleteMany();
 
-  for (const item of initialItems) {
-    await prisma.item.create({
-      data: {
-        name: item.name,
-        url: item.url,
-        price: item.price,
-        priceDiscount: item.priceDiscount,
-        category: {
-          connect: {
-            id: item.categoryId,
-          }
-        },
-        brand: {
-          connect: {
-            id: item.brandId,
-          }
-        },
-        itemStock: {
-          create: {
-            stockQty: item.stockQty
-          }
-        },
-        itemImage: {
-          create: {
-            images: item.itemImages || ['no-image.webp']
-          }
-        },
-        forSale: {
-          create: item.forSale ? {} : undefined
-        },
-        bestSeller: {
-          create: item.bestSeller ? {} : undefined
-        },
-        itemSpecification: {
-          create: {
-            specification: item.spec
-          }
-        },
-        itemGroup: {
-          connectOrCreate: {
-            where: {
-              itemGroupName: item.itemGroup.groupName
-            },
-            create: {
-              itemGroupName: item.itemGroup.groupName
+  for (const initialItem of initialItems) {  
+    await prisma.$transaction(async (prisma) => {
+      const { id } = await prisma.item.create({
+        data: {
+          name: initialItem.name,
+          url: initialItem.url,
+          price: initialItem.price,
+          priceDiscount: initialItem.priceDiscount,
+          category: {
+            connect: {
+              id: initialItem.categoryId,
             }
-          }
-        },
-        itemOption: {
-          create:
-            item.itemGroup.optionKeys.map(opt => {
-              return {
-                optionName: opt,
-                optionValue: getPropertyCaseInsensitive(item.spec, opt)
-              }
-            })
+          },
+          brand: {
+            connect: {
+              id: initialItem.brandId,
+            }
+          },
+          itemStock: {
+            create: {
+              stockQty: initialItem.stockQty
+            }
+          },
+          itemImage: {
+            create: {
+              images: initialItem.itemImages || ['no-image.webp']
+            }
+          },
+          forSale: {
+            create: initialItem.forSale ? {} : undefined
+          },
+          bestSeller: {
+            create: initialItem.bestSeller ? {} : undefined
+          },
+          itemSpecification: {
+            create: {
+              specification: initialItem.spec
+            }
+          },
+          groupKey: initialItem.groupKey,
+          groupOptions: {
+            create:
+              Object.keys(initialItem.groupOptions).map(key => {
+                const k = key as keyof TItemOption;
+                const value = initialItem.groupOptions[k];
+
+                return {
+                  groupOption: k,
+                  groupOptionValue: value,
+                }
+              })
+          },
         }
+      });
+
+      if (initialItem.groupOptions.COLOR) {
+        const color = initialItem.groupOptions.COLOR;
+
+        const { hex } = await prisma.colors.findFirst({
+          where: {
+            name: {
+              contains: color,
+              mode: 'insensitive'
+            }
+          }, select: {
+            hex: true
+          }
+        });
+        
+
+        await prisma.groupOptions.update({
+          where: {
+            itemId_groupOption: {
+              itemId: id,
+              groupOption: 'COLOR',
+            }
+          },
+          data: {
+            groupOptionValueAdd: hex,
+          }
+        })
       }
     })
   }
+  
 }

@@ -22,33 +22,34 @@ class ItemContoller {
           id: +id,
         },
         include: {
-          brand: true,
+          
           itemSpecification: {
             select: {
               specification: true
             }
           },
-          itemGroup: {
-            include: {
-              items: {
-                select: {
-                  id: true,
-                  url: true,
-                  itemOption: {
-                    select: {
-                      optionName: true,
-                      optionValue: true,
-                    }
-                  }
-                }
-              }
+          groupOptions: {
+            select: {
+              itemId: true,
+              groupOption: true,
+              groupOptionValue: true,
+              groupOptionValueAdd: true
             }
           }
         },
+      });
+
+      const group = await prisma.item.findMany({
+        where: {
+          groupKey: item.groupKey
+        },
+        select: {
+          groupOptions: true,
+        }
       })
 
       return res.json({
-        data: item,
+        data: { item: item , group: group},
       });
     } catch (error) {
       return next(error);

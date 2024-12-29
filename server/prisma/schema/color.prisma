@@ -1,0 +1,5 @@
+model Colors {
+  id        Int @id @default(autoincrement())
+  name      String @map("color_name")
+  hex       String @map("color_hex")
+}

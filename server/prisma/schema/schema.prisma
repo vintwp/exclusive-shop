@@ -13,6 +13,16 @@ enum Role {
   USER
 }
 
+enum ItemOptionParameter {
+  COLOR
+  STORAGE
+  VOLUME
+  WHEEL_DIAMETER
+  TYPE
+  SIZE
+}
+
+
 // default image - no-image.webp
 
 
@@ -29,9 +39,8 @@ model Item {
   categoryName      String @map("category_name")
   brand             Brand @relation(fields: [brandName], references: [name]) 
   brandName         String @map("brand_name")
-  itemGroup         ItemGroup @relation(fields: [itemGroupName], references: [itemGroupName])
-  itemGroupName     String
-  itemOption        ItemOption[]
+  groupOptions      GroupOptions[]
+  groupKey          String
   itemStock         ItemStock?
   itemImage         ItemImage? @relation(fields: [itemImageId], references: [id])
   itemImageId       Int? @map("item_image_url")
@@ -44,6 +53,7 @@ model Item {
   updatedAt     DateTime   @updatedAt @map("updated_at")
   
   @@map("item")
+  @@unique([id, groupKey])
 }
 
 model ItemStock {
@@ -55,60 +65,21 @@ model ItemStock {
   @@map("item_stock")
 }
 
-model ItemOption {
+model GroupOptions {
   id                    Int @id @default(autoincrement())
-  item                  Item @relation(fields: [itemId], references: [id])
+  groupOption           ItemOptionParameter? @map("group_option")
+  groupOptionValue      String? @map("group_option_value")
+  groupOptionValueAdd   String? @default("") @map("group_option_value_additional")
+  item                  Item @relation(fields: [itemId, itemGroupKey], references: [id, groupKey])
   itemId                Int
-  optionName            String @map("option_name")
-  optionValue           String @map("option_value")
-  optionValueExtended   String? @default("")
+  itemGroupKey          String @map("group_key")
+  createdAt             DateTime   @default(now()) @map("created_at")
+  updatedAt             DateTime   @updatedAt @map("updated_at")
+	
+  @@map("item_group")
+
+  @@unique([itemId, groupOption])
 }
-
-model ItemColorOption {
-  colorName     String
-  colorIconUrl  String
-
-  @@id([colorName])  
-}
-
-model ItemGroup {
-  id                Int @id @default(autoincrement())
-  itemGroupName     String @map("item_group_name") @unique
-  items             Item[]
-  createdAt         DateTime   @default(now()) @map("created_at")
-  updatedAt         DateTime   @updatedAt @map("updated_at")
-	@@map("item_group")
-}
-
-
-
-
-// model ItemGroup {
-//   id                Int @id @default(autoincrement())
-//   itemGroupName     String @unique @map("item_group_name")
-//   items             Item[]
-//   createdAt         DateTime   @default(now()) @map("created_at")
-//   updatedAt         DateTime   @updatedAt @map("updated_at")
-// 	@@map("item_group")
-// }
-
-model ItemGroupProp {
-  id    Int @id @default(autoincrement())
-  name  String @map("group_name")
-
-  createdAt         DateTime   @default(now()) @map("created_at")
-  updatedAt         DateTime   @updatedAt @map("updated_at")
-	@@map("item_group_property")
-}
-
-model ItemGroupValue {
-  id    Int @id @default(autoincrement())
-  name  String @map("group_name")
-  createdAt         DateTime   @default(now()) @map("created_at")
-  updatedAt         DateTime   @updatedAt @map("updated_at")
-	@@map("item_group_value")
-}
-
 
 model ItemImage {
   id          Int @id @default(autoincrement())
