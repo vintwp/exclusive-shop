@@ -35,7 +35,13 @@ export async function createUsers() {
       data: {
         ...user,
         password: hashedPassword,
+        cart: {
+          create: {}
+        },
+        wishlist: {
+          create: {}
+        }
       }
-    })
+    });
   }
 }

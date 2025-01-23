@@ -1,18 +1,17 @@
-import { getStore } from '@/entities/Store';
-import { Container } from '@/shared/ui';
-import { BrowseByCategory, StoresList } from '@/widgets';
+import {
+  BestSellers,
+  BrowseByCategory,
+  StoresList,
+  FlashSales,
+} from '@/widgets';
 
 export default async function Home() {
-  const stores = await getStore();
-
   return (
-    <div>
-      <Container>
-        <StoresList stores={stores.ok ? stores.data : []} />
-      </Container>
-      <Container>
-        <BrowseByCategory />
-      </Container>
-    </div>
+    <>
+      <StoresList />
+      <FlashSales />
+      <BrowseByCategory />
+      <BestSellers />
+    </>
   );
 }

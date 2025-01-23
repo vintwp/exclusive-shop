@@ -1,6 +1,5 @@
 import { MultipleSelectorOption } from '@/shared/components';
 
-/* eslint-disable @typescript-eslint/indent */
 type StoreGeneral = {
   id: string;
   name: string;

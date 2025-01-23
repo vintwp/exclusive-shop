@@ -4,6 +4,23 @@ import { Brand, Category, Store } from "@prisma/client";
 import { deleteFiles, createUrl, convertIdToString } from "../lib";
 import { TCategoryResponseDB } from "../src/types";
 
+const selectConfig = {
+  id: true,
+  name: true,
+  url: true,
+  primaryStoreId: true,
+  primaryStore: true,
+  additionalStores: {
+    select: {
+      store: true
+    }
+  },
+  displayOnMainPage: true,
+  image: true,
+  createdAt: true,
+  updatedAt: true,
+}
+
 class CategoryService {
   async create(newCategory: Pick<Category, 'name' | 'image' | 'displayOnMainPage'> & { primaryStoreId : string}) {
     const category = await prisma.category.create({
@@ -19,20 +36,7 @@ class CategoryService {
         },
       },
       select: {
-        id: true,
-        name: true,
-        url: true,
-        primaryStoreId: true,
-        primaryStore: true,
-        additionalStores: {
-          select: {
-            store: true
-          }
-        },
-        displayOnMainPage: true,
-        image: true,
-        createdAt: true,
-        updatedAt: true,
+        ...selectConfig
       },
     });
 
@@ -126,20 +130,21 @@ class CategoryService {
         id: +id,
       },
       select: {
-        id: true,
-        name: true,
-        url: true,
-        primaryStoreId: true,
-        primaryStore: true,
-        additionalStores: {
-          select: {
-            store: true
+        ...selectConfig,
+        refineOption: {
+          include: {
+            itemsRefine: {
+              where: {
+                refineOptions: {
+                  some: {
+                    optionName: 'stock',
+                    optionValue: 'Out of stock',
+                  }
+                }
+              }
+            }
           }
-        },
-        displayOnMainPage: true,
-        image: true,
-        createdAt: true,
-        updatedAt: true,
+        }
       },
     });
 
@@ -167,7 +172,11 @@ class CategoryService {
         where: {
           id: +id,
         },
-      }); 
+        select: {
+          ...selectConfig
+        }
+        
+      });
 
       return category as TCategoryResponseDB;
     } catch (error) {

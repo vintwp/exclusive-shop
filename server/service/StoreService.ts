@@ -25,15 +25,19 @@ const message = {
 class StoreService {
   async create(name: NonNullable<string>) {
     try {
+      const url = createUrl(name);
+
       const req = await prisma.store.create({
         data: {
           name,
-          url: createUrl(name),
+          url,
         }
       });
 
       return { data: req as Store, message: message.create.ok };
     } catch (error) {
+      console.log(error)
+
       throw ApiError.forbidden(message.create.error)
     }   
   }

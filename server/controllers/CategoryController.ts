@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { CategoryService } from "../service";
 import { UploadedFile } from "express-fileupload";
-import { saveFiles, isTrueSet, convertIdToString, deleteFiles, updateFiles } from "../lib";
+import { saveFiles, isTrueSet, convertIdToString, deleteFiles, updateFiles, checkImageAvailability } from "../lib";
 import { TCategoryRequest, TCategoryResponseDB, TCategoryResponseServer } from "../src/types";
 import { Brand, Store } from "@prisma/client";
 import { IRequest, IResponse, IResponseData } from "../types";

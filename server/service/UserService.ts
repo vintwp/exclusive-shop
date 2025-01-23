@@ -28,7 +28,9 @@ function createResponseUser(user: User) {
   return response;
 };
 
-async function createUserInDB(email: string, password?: string, oauthId?: string, role = defaultRole) {
+async function createUserInDB(
+  email: string, password?: string, oauthId?: string, role = defaultRole
+) {
   const hashedPassword = password ? await hashPassword(password): undefined;
 
   const user = await prisma.user.create({
@@ -37,7 +39,13 @@ async function createUserInDB(email: string, password?: string, oauthId?: string
       password: password && hashedPassword,
       oauthId: oauthId && oauthId,
       role,
-    }
+      wishlist: {
+        create: {}
+      },
+      cart: {
+        create: {}
+      }
+    },
   });
 
   const response = createResponseUser(user);

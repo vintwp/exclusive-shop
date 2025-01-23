@@ -128,6 +128,15 @@ import {
   AccordionContent,
 } from './Accordion';
 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from './Card';
+
 // #endregion
 
 export {
@@ -223,4 +232,10 @@ export {
   AccordionItem,
   AccordionTrigger,
   AccordionContent,
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
 };

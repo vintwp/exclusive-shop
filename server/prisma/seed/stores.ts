@@ -49,4 +49,6 @@ export async function createStores() {
       }
     })
   }
+
+  await prisma.$queryRaw`ALTER SEQUENCE store_store_id_seq RESTART WITH 6`
 }

@@ -33,7 +33,6 @@ const unlinkFile = async (removeFileName: string, folderName?: string): Promise<
     await fs.stat(filePath);
     await fs.unlink(filePath);
 
-    console.log(`${removeFileName} was successfully removed`);
     return Promise.resolve();
   } catch (err) {
     return Promise.reject();

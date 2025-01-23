@@ -1,5 +1,10 @@
 // #region user
 
+enum Role {
+  ADMIN
+  USER
+}
+
 model User {
   id        Int       @id @default(autoincrement())
   oauthId   String?   @unique
@@ -9,6 +14,9 @@ model User {
   lastName  String?   @map("last_name")
   adress    String?
   role      Role      @default(USER)
+  cart      Cart?
+  wishlist  Wishlist?
+  review    Review[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 

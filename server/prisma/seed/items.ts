@@ -1,24 +1,19 @@
 import { prisma } from "./prismaClient";
-
 import initialItems from "./items/index";
 import { TItemOption } from './items/types';
-
-function getPropertyCaseInsensitive<
-  T extends Record<string, string>,
-  K extends Extract<keyof T, string>
->(obj: T, prop: K) {
-  const propLowerCase = prop.toLowerCase();
-  const objectPropValue = Object.keys(obj).find(key => key.toLowerCase() === propLowerCase)
-
-  return objectPropValue ? obj[objectPropValue] : '';
-};
-
+import { checkImageAvailability } from "../../lib";
 
 export async function createItems() {
   await prisma.itemImage.deleteMany();
 
   for (const initialItem of initialItems) {  
     await prisma.$transaction(async (prisma) => {
+      const brand = await prisma.brand.findUnique({
+        where: {
+          id: initialItem.brandId
+        }
+      });
+
       const { id } = await prisma.item.create({
         data: {
           name: initialItem.name,
@@ -42,12 +37,12 @@ export async function createItems() {
           },
           itemImage: {
             create: {
-              images: initialItem.itemImages || ['no-image.webp']
+              images: checkImageAvailability(initialItem.itemImages)
             }
           },
-          forSale: {
-            create: initialItem.forSale ? {} : undefined
-          },
+          // forSale: {
+          //   create: initialItem.forSale ? {} : undefined
+          // },
           bestSeller: {
             create: initialItem.bestSeller ? {} : undefined
           },
@@ -69,6 +64,50 @@ export async function createItems() {
                 }
               })
           },
+          refineOptions: {
+            connectOrCreate: [
+              {
+                where: {
+                  categoryId_optionName_optionValue: {
+                    optionName: 'brand',
+                    optionValue: brand.name,
+                    categoryId: initialItem.categoryId
+                  }
+                }, 
+                create: {
+                  optionName: 'brand',
+                  optionValue: brand.name,
+                  categoryId: initialItem.categoryId
+                }
+              },
+              {
+                where: {
+                  categoryId_optionName_optionValue: {
+                    optionName: 'stock',
+                    optionValue: initialItem.stockQty > 0 ? 'In stock' : 'Out of stock',
+                    categoryId: initialItem.categoryId
+                  }
+                }, 
+                create: {
+                  optionName: 'stock',
+                  optionValue: initialItem.stockQty > 0 ? 'In stock' : 'Out of stock',
+                  categoryId: initialItem.categoryId
+                }
+              },
+            ]
+          },
+          // refineOptions: {
+          //   create: [
+          //     {
+          //       optionName: 'stock',
+          //       optionValue: initialItem.stockQty > 0 ? 'true' : 'false'
+          //     },
+          //     {
+          //       optionName: 'brand',
+          //       optionValue: brand.name
+          //     },
+          //   ]
+          // }
         }
       });
 

@@ -6,7 +6,7 @@ type TinitialCategories = Array<Omit<Category, 'updatedAt' | 'createdAt' | 'refi
   additionalStores?: number[]
 }>;
 
-const defaultRefineOption = ['brand', 'price', 'stock'];
+const defaultRefineOption = ['brand', 'stock'];
 
 const initialCategories: TinitialCategories = [
   {
@@ -137,24 +137,26 @@ export async function createCategories() {
               }
             }),
         },
-        refineOption: {
-          create: 
-            defaultRefineOption.map(defRefOption => {
-              return {
-                option: {
-                  connectOrCreate: {
-                    where: {
-                      optionName: defRefOption,
-                    },
-                    create: {
-                      optionName: defRefOption,
-                    }
-                  }
-                }
-              }
-            })
-        }
+        // refineOption: {
+        //   create: 
+        //     defaultRefineOption.map(defRefOption => {
+        //       return {
+        //         option: {
+        //           connectOrCreate: {
+        //             where: {
+        //               optionName: defRefOption,
+        //             },
+        //             create: {
+        //               optionName: defRefOption,
+        //             }
+        //           }
+        //         }
+        //       }
+        //     })
+        // }
       }
     })
   }
+
+  await prisma.$queryRaw`ALTER SEQUENCE category_category_id_seq RESTART WITH 10`
 }

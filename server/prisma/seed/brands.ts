@@ -98,6 +98,7 @@ export async function createBrands() {
       }
     }
   });
+
   for (const brand of initialBrands) {
     await prisma.brand.create({
       data: {
@@ -120,4 +121,6 @@ export async function createBrands() {
       }
     })
   }
+
+  await prisma.$queryRaw`ALTER SEQUENCE brand_brand_id_seq RESTART WITH 14`
 };

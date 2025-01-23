@@ -44,22 +44,22 @@ const initialItemImages: TInitialItemImages = {
   },
   'apple-iphone-16-pro': {
     'black-titanium': [
-      'items/mobile-phones/apple-iphone-16-pro/apple-iphone-16-pro-max-black-titanium.jpg',
-      'items/mobile-phones/apple-iphone-16-pro/apple-iphone-16-pro-max-black-titanium-2.jpg',
-      'items/mobile-phones/apple-iphone-16-pro/apple-iphone-16-pro-max-black-titanium-3.jpg',
-      'items/mobile-phones/apple-iphone-16-pro/apple-iphone-16-pro-max-black-titanium-4.jpg'
+      'items/mobile-phones/apple-iphone-16-pro/apple-iphone-16-pro-black-titanium.jpg',
+      'items/mobile-phones/apple-iphone-16-pro/apple-iphone-16-pro-black-titanium-2.jpg',
+      'items/mobile-phones/apple-iphone-16-pro/apple-iphone-16-pro-black-titanium-3.jpg',
+      'items/mobile-phones/apple-iphone-16-pro/apple-iphone-16-pro-black-titanium-4.jpg'
     ],
     'desert-titanium': [
-      'items/mobile-phones/apple-iphone-16-pro/apple-iphone-16-pro-max-desert-titanium.jpg',
-      'items/mobile-phones/apple-iphone-16-pro/apple-iphone-16-pro-max-desert-titanium-2.jpg',
-      'items/mobile-phones/apple-iphone-16-pro/apple-iphone-16-pro-max-desert-titanium-3.jpg',
-      'items/mobile-phones/apple-iphone-16-pro/apple-iphone-16-pro-max-desert-titanium-4.jpg'
+      'items/mobile-phones/apple-iphone-16-pro/apple-iphone-16-pro-desert-titanium.jpg',
+      'items/mobile-phones/apple-iphone-16-pro/apple-iphone-16-pro-desert-titanium-2.jpg',
+      'items/mobile-phones/apple-iphone-16-pro/apple-iphone-16-pro-desert-titanium-3.jpg',
+      'items/mobile-phones/apple-iphone-16-pro/apple-iphone-16-pro-desert-titanium-4.jpg'
     ],
     'natural-titanium': [
-      'items/mobile-phones/apple-iphone-16-pro/apple-iphone-16-pro-max-natural-titanium.jpg',
-      'items/mobile-phones/apple-iphone-16-pro/apple-iphone-16-pro-max-natural-titanium-2.jpg',
-      'items/mobile-phones/apple-iphone-16-pro/apple-iphone-16-pro-max-natural-titanium-3.jpg',
-      'items/mobile-phones/apple-iphone-16-pro/apple-iphone-16-pro-max-natural-titanium-4.jpg'
+      'items/mobile-phones/apple-iphone-16-pro/apple-iphone-16-pro-natural-titanium.jpg',
+      'items/mobile-phones/apple-iphone-16-pro/apple-iphone-16-pro-natural-titanium-2.jpg',
+      'items/mobile-phones/apple-iphone-16-pro/apple-iphone-16-pro-natural-titanium-3.jpg',
+      'items/mobile-phones/apple-iphone-16-pro/apple-iphone-16-pro-natural-titanium-4.jpg'
     ],
     'white-titanium': [
       'items/mobile-phones/apple-iphone-16-pro/apple-iphone-16-pro-white-titanium.jpg',
@@ -146,7 +146,7 @@ export const initialItems: TinitialItems[] = [
     categoryId: 1,
     storeId: 1,
     price: 1399,
-    priceDiscount: 1299,
+    priceDiscount: 1399,
     ourItem: false,
     groupKey: intialItemGroups['apple-iphone-16-pro-max'].groupName,
     groupOptions: {'COLOR': 'Desert Titanium', 'STORAGE': '512 Gb'},
@@ -185,7 +185,7 @@ export const initialItems: TinitialItems[] = [
     priceDiscount: 1699,
     ourItem: false,
     groupKey: intialItemGroups['apple-iphone-16-pro-max'].groupName,
-    groupOptions: {'COLOR': 'Natural Titanium', 'STORAGE': '1Tb Gb'},
+    groupOptions: {'COLOR': 'Natural Titanium', 'STORAGE': '1 Tb'},
     stockQty: 5,
     bestSeller: true,
     forSale: false,
@@ -231,7 +231,7 @@ export const initialItems: TinitialItems[] = [
       "CPU":"2x 4.05 GHz, 4x 2.42 GHz, 6 Cores",
       "GPU":"Apple GPU, 6 Cores",
       "RAM":"8 GB, 4266 MHz",
-      "Storage": "1Tb GB",
+      "Storage": "1Tb",
       "Color": "White Titanium",
       "Display":"6.9 in, OLED, 1320 x 2868 pixels, 24 bit",
       "Battery":"4685 mAh, Li-Ion",
@@ -290,7 +290,7 @@ export const initialItems: TinitialItems[] = [
     categoryId: 1,
     storeId: 1,
     price: 1199,
-    priceDiscount: 1099,
+    priceDiscount: 1199,
     ourItem: false,
     groupKey: intialItemGroups['apple-iphone-16-pro'].groupName,
     groupOptions: {'COLOR': 'Desert Titanium', 'STORAGE': '512 Gb'},
@@ -375,7 +375,7 @@ export const initialItems: TinitialItems[] = [
       "CPU":"2x 4.05 GHz, 4x 2.42 GHz, 6 Cores",
       "GPU":"Apple GPU, 6 Cores",
       "RAM":"8 GB, 4266 MHz",
-      "Storage": "1Tb GB",
+      "Storage": "1Tb",
       "Color": "White Titanium",
       "Display":"6.3 in, OLED, 1206 x 2622 pixels, 24 bit",
       "Battery":"3582 mAh, Li-Ion",
@@ -439,7 +439,7 @@ export const initialItems: TinitialItems[] = [
     groupOptions: {'COLOR': 'Black', 'STORAGE': '512 Gb'},
     stockQty: 0,
     bestSeller: false,
-    forSale: false,
+    forSale: true,
     itemImages: initialItemImages['apple-iphone-16']['black'],
     spec: {
       "Dimensions": "71.6 x 147.6 x 7.8 mm",
@@ -544,7 +544,7 @@ export const initialItems: TinitialItems[] = [
     groupOptions: {'COLOR': 'Pink', 'STORAGE': '512 Gb'},
     stockQty: 9,
     bestSeller: false,
-    forSale: false,
+    forSale: true,
     itemImages: initialItemImages['apple-iphone-16']['pink'],
     spec: {
       "Dimensions": "71.6 x 147.6 x 7.8 mm",
@@ -754,7 +754,7 @@ export const initialItems: TinitialItems[] = [
     groupOptions: {'COLOR': 'White', 'STORAGE': '128 Gb'},
     stockQty: 0,
     bestSeller: false,
-    forSale: false,
+    forSale: true,
     itemImages: initialItemImages['apple-iphone-16']['white'],
     spec: {
       "SoC": "Apple A18",

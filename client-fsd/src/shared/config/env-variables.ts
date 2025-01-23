@@ -19,5 +19,8 @@ export const CATEGORY_API = getEnvVar('CATEGORY_API');
 export const STORE_API = getEnvVar('STORE_API');
 export const USER_API = getEnvVar('USER_API');
 export const SEARCH_API = getEnvVar('SEARCH_API');
+export const ITEM_API = getEnvVar('ITEM_API');
+export const ITEM_SALES = getEnvVar('ITEM_SALES');
+export const ITEM_BEST_SELLING = getEnvVar('ITEM_BEST_SELLING');
 
 export const ALL_USERS = getEnvVar('USER_GETALL');

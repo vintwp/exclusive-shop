@@ -4,6 +4,7 @@ import { TRequest, TResponse } from "../types";
 import { convertIdToString } from "../lib";
 import { Store } from "@prisma/client";
 
+
 class StoreController {
   async create(req: TRequest<{name: string}>, res: TResponse, next: NextFunction) {
     const { name } = req.body;

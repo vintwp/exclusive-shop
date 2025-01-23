@@ -1,5 +1,5 @@
 model Brand {
-  id         Int      @id @default(autoincrement())
+  id         Int      @id @default(autoincrement()) @map("brand_id")
   name       String   @map("brand_name") @unique
   url        String   @map("brand_url")
   image      String   @map("brand_logo")

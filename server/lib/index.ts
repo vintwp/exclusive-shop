@@ -10,6 +10,7 @@ import { convertIdToString } from './convertIdToString';
 import { saveFiles, deleteFiles, updateFiles } from "./fileHandlers";
 import { hashPassword, comparePassword } from "./passwordHandler";
 import { extractDataForSearchLibrary } from "./extractDataForSearchLibrary";
+import { checkImageAvailability } from "./checkImageAvailability";
 
 export {
   generateJwt,
@@ -25,5 +26,6 @@ export {
   createUrl,
   hashPassword,
   comparePassword,
-  extractDataForSearchLibrary
+  extractDataForSearchLibrary,
+  checkImageAvailability
 };

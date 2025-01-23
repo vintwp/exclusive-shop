@@ -25,6 +25,7 @@ export const PageSectionUpperTitle: React.FC<UpperTitleProps> = ({
 };
 
 type PrimaryTitleProps = UpperTitleProps & {
+  className?: string;
   children?: React.ReactNode;
 };
 
@@ -34,7 +35,12 @@ export const PageSectionPrimaryTitle: React.FC<PrimaryTitleProps> = ({
   children,
 }) => {
   return (
-    <div className="mb-8 flex justify-between md:mb-10 lg:mb-14">
+    <div
+      className={cn(
+        'mb-8 flex items-center justify-between md:mb-10 lg:mb-14',
+        className,
+      )}
+    >
       <h2
         className={cn(
           'text-xl font-semibold tracking-tight lg:text-4xl',
@@ -54,5 +60,5 @@ type Props = {
 };
 
 export const PageSection: React.FC<Props> = ({ className, children }) => {
-  return <div className={cn(className)}>{children}</div>;
+  return <div className={cn('py-8 lg:py-16', className)}>{children}</div>;
 };

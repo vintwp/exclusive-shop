@@ -1,12 +1,12 @@
 // #region category
 model Category {
-  id                Int      @id @default(autoincrement())
+  id                Int      @id @default(autoincrement()) @map("category_id")
   name              String   @map("category_name") @unique
   primaryStoreId    Int      @map("primary_store_id")
   primaryStore      Store    @relation(fields: [primaryStoreId], references: [id], onDelete: Restrict, onUpdate: Cascade)
   additionalStores  StoreCategories[]
   brands            CategoryBrands[]
-  refineOption      CategoryOptions[]
+  refineOption      CategoryRefineOption[]
   items             Item[]
   displayOnMainPage Boolean  @default(false) @map("display_on_main_page")
   image             String   @map("category_logo")
@@ -19,25 +19,18 @@ model Category {
 
 model CategoryRefineOption {
   id            Int @id @default(autoincrement())
-  optionName    String @unique 
-  categories    CategoryOptions[]
+  optionName    String
+  optionValue   String
+  category      Category @relation(fields: [categoryId], references: [id])
+  categoryId    Int
+  itemsRefine   Item[]
   assignedAt    DateTime @default(now()) @map("assigned_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
 
   @@map("category_refine_option")
+  @@unique([categoryId, optionName, optionValue])
 }
 
-model CategoryOptions {
-  category    Category @relation(fields: [categoryId], references: [id])
-  categoryId  Int @map("category_id")
-  option      CategoryRefineOption @relation(fields: [optionId], references: [id])
-  optionId    Int @map("option_id")
-  assignedAt  DateTime @default(now()) @map("assigned_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-
-  @@map("_category-to-options")
-  @@id(fields: [categoryId, optionId])
-}
 
 model CategoryBrands {
   categoryId    Int @map("category_id")

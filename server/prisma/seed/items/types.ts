@@ -18,9 +18,7 @@ type TInitialItemGroups = {
 };
 
 type TInitialItemImages = {
-  [k in string]: {
-    [p in string]: string[]
-  }
+  [k in string]: { [p in string]: string[] } | string[];
 };
 
 type TinitialItems = {
