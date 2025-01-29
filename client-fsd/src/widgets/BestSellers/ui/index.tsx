@@ -1,31 +1,26 @@
 import React from 'react';
-import {
-  PageSectionUpperTitle,
-  PageSectionPrimaryTitle,
-  PageSection,
-} from '@/shared/components/PageSection/PageSection';
-import { Button, Container } from '@/shared/ui';
 import Link from 'next/link';
-import { getBestSelling, ItemCard } from '@/entities/Item';
-import {
-  CarouselContentLandingPage,
-  CarouselItemLandingPage,
-  CarouselLandingPage,
-} from '@/shared/components';
+import { PageSection } from '@/shared/components';
+import { Button, Container } from '@/shared/ui';
+import { getBestSelling } from '@/entities/Item';
+import { BestSellersCarousel } from './BestSellersCarousel';
 
 type Props = {};
 
 export const BestSellers: React.FC<Props> = async () => {
-  const bestSellingItems = await getBestSelling(4);
+  const bestSellingItems = await getBestSelling();
+  const itemsToRender = bestSellingItems.ok ? bestSellingItems.data : [];
 
   return (
     <Container>
       <PageSection>
-        <PageSectionUpperTitle title="This Month" />
-        <PageSectionPrimaryTitle
-          title="Best Selling Products"
-          className="items-center"
-        >
+        <PageSection.Header className="justify-between">
+          <PageSection.Titles>
+            <PageSection.UpperTitle>This Month</PageSection.UpperTitle>
+            <PageSection.PrimaryTitle>
+              Best Selling Products
+            </PageSection.PrimaryTitle>
+          </PageSection.Titles>
           <Button asChild>
             <Link
               href="/best-sellers"
@@ -34,21 +29,8 @@ export const BestSellers: React.FC<Props> = async () => {
               View All
             </Link>
           </Button>
-        </PageSectionPrimaryTitle>
-        <CarouselLandingPage>
-          <CarouselContentLandingPage className="-ml-[30px]">
-            {bestSellingItems.ok &&
-              bestSellingItems.data.map(item => (
-                <CarouselItemLandingPage
-                  key={item.id}
-                  className="flex basis-full justify-center pl-[15px] sm:basis-[300px] sm:justify-start
-                    sm:pl-[30px]"
-                >
-                  <ItemCard item={item} />
-                </CarouselItemLandingPage>
-              ))}
-          </CarouselContentLandingPage>
-        </CarouselLandingPage>
+        </PageSection.Header>
+        <BestSellersCarousel items={itemsToRender} />
       </PageSection>
     </Container>
   );

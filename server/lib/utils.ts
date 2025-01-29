@@ -69,7 +69,7 @@ export function isTrueSet(value: string) {
 
 export function createUrl(name: string): string {
   const slug = name
-    .replace(/[^a-zA-Z ]/g, '')
+    .replace(/[^a-zA-Z0-9 ]/g, '')
     .replace(/\s+/g, '-')
     .toLowerCase();
 

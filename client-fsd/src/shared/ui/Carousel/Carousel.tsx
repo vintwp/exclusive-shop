@@ -1,3 +1,8 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable consistent-return */
+/* eslint-disable react/jsx-no-constructed-context-values */
+/* eslint-disable @typescript-eslint/no-shadow */
+
 'use client';
 
 import * as React from 'react';
@@ -6,8 +11,8 @@ import useEmblaCarousel, {
 } from 'embla-carousel-react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 
-import { cn } from '../../lib';
-import { Button } from '../Button';
+import { cn } from '@/shared/lib';
+import { CarouselButton as Button } from './CarouselButton';
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -115,7 +120,6 @@ const Carousel = React.forwardRef<
       api.on('reInit', onSelect);
       api.on('select', onSelect);
 
-      // eslint-disable-next-line consistent-return
       return () => {
         api?.off('select', onSelect);
       };
@@ -123,7 +127,6 @@ const Carousel = React.forwardRef<
 
     return (
       <CarouselContext.Provider
-        // eslint-disable-next-line react/jsx-no-constructed-context-values
         value={{
           carouselRef,
           api,
@@ -155,14 +158,15 @@ Carousel.displayName = 'Carousel';
 
 const CarouselContent = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => {
+  React.HTMLAttributes<HTMLDivElement> & { parentClassName?: string }
+>(({ className, parentClassName, ...props }, ref) => {
   const { carouselRef, orientation } = useCarousel();
+  // parent class name was added to prevent hidding of cart border
 
   return (
     <div
       ref={carouselRef}
-      className="overflow-hidden"
+      className={cn('h-full overflow-hidden', parentClassName)}
     >
       <div
         ref={ref}
@@ -262,11 +266,66 @@ const CarouselNext = React.forwardRef<
 
 CarouselNext.displayName = 'CarouselNext';
 
+const CarouselDots = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => {
+  const { api } = useCarousel();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [updateState, setUpdateState] = React.useState(false);
+  const toggleUpdateState = React.useCallback(
+    () => setUpdateState(prevState => !prevState),
+    [],
+  );
+
+  const numberOfSlides = api?.scrollSnapList().length || 0;
+  const currentSlide = api?.selectedScrollSnap() || 0;
+
+  React.useEffect(() => {
+    if (api) {
+      api.on('select', toggleUpdateState);
+      api.on('reInit', toggleUpdateState);
+
+      return () => {
+        api.off('select', toggleUpdateState);
+        api.off('reInit', toggleUpdateState);
+      };
+    }
+  }, [api, toggleUpdateState]);
+
+  return (
+    <div
+      ref={ref}
+      className={cn('mx-auto flex w-min gap-3', className)}
+      {...props}
+    >
+      {Array.from({ length: numberOfSlides }).map((_, i) => (
+        <Button
+          // eslint-disable-next-line react/no-array-index-key
+          key={i}
+          variant="outline"
+          className={cn(
+            'relative h-3 min-h-0 w-3 rounded-full p-0',
+            `border-white/50 bg-white/50 after:absolute after:block after:h-2 after:w-2
+            after:rounded-full after:content-[""]`,
+            currentSlide === i && 'bg-white after:bg-clr-secondary-3',
+          )}
+          onClick={() => api?.scrollTo(i)}
+        />
+      ))}
+    </div>
+  );
+});
+
+CarouselDots.displayName = 'CarouselDots';
+
 export {
   type CarouselApi,
+  type CarouselProps,
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
+  CarouselDots,
 };

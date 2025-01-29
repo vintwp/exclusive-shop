@@ -5222,5 +5222,21 @@
   {
     "name": "White Titanium",
     "hex": "#F2F1ED"
+  },
+  {
+    "name": "Silver",
+    "hex": "#C0C0C0"
+  },
+  {
+    "name": "Space Black",
+    "hex": "#505150"
+  },
+  {
+    "name": "Midnight",
+    "hex": "#191970"
+  },
+  {
+    "name": "Space Gray",
+    "hex": "#65737E"
   }
 ]

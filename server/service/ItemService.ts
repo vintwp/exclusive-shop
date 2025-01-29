@@ -36,6 +36,11 @@ const getItemIncludeConfig = {
         itemId: true,
       }
     },
+    itemOur: {
+      select: {
+        itemId: true
+      }
+    },
     itemImage: true,
     review: {
       select: {
@@ -150,7 +155,8 @@ class ItemService {
       where: {
         id: +id,
       },
-      ...getItemIncludeConfig,
+      ...getItemIncludeConfig
+      ,
     });
 
     const itemsGroupByKeyFromDB: TItemGroupDB[] = await prisma.groupOptions.findMany({
@@ -207,7 +213,7 @@ class ItemService {
   }
 
   async getBestSelling() {
-    const request = await prisma.itemsBestSellers.findMany({
+    const items = await prisma.itemsBestSellers.findMany({
       select: {
         item: {
           ...getItemIncludeConfig,
@@ -215,10 +221,39 @@ class ItemService {
       }
     });
 
-    const itemBestSelling = request.map(item => item.item);
+    const itemBestSelling = items.map(item => item.item);
 
     const response = await Promise.all(
       itemBestSelling.map(async (item) => {
+        const itemsGroupByKeyFromDB: TItemGroupDB[] = await prisma.groupOptions.findMany({
+          where: {
+            itemGroupKey: item.groupKey,
+          },
+          ...getItemGroupKeyConfig
+        });
+  
+        const reponseItem = createResponseItemFromDB(item, itemsGroupByKeyFromDB);
+  
+        return reponseItem;
+      })
+    ) as TItemResponseDB[];
+
+    return response;
+  }
+
+  async getOurItems() {
+    const request = await prisma.itemsOur.findMany({
+      select: {
+        item: {
+          ...getItemIncludeConfig,
+        }
+      }
+    });
+
+    const items = request.map(item => item.item);
+
+    const response = await Promise.all(
+      items.map(async (item) => {
         const itemsGroupByKeyFromDB: TItemGroupDB[] = await prisma.groupOptions.findMany({
           where: {
             itemGroupKey: item.groupKey,

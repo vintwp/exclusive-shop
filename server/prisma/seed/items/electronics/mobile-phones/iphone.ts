@@ -116,7 +116,7 @@ export const initialItems: TinitialItems[] = [
     groupOptions: {'COLOR': 'Black Titanium', 'STORAGE': '256 Gb'},
     stockQty: 8,
     bestSeller: false,
-    forSale: true,
+    forSale: false,
     itemImages: initialItemImages['apple-iphone-16-pro-max']['black-titanium'],
     spec: {
       "SoC":"Apple A18 Pro",
@@ -260,7 +260,7 @@ export const initialItems: TinitialItems[] = [
     groupOptions: {'COLOR': 'Black Titanium', 'STORAGE': '256 Gb'},
     stockQty: 8,
     bestSeller: false,
-    forSale: true,
+    forSale: false,
     itemImages: initialItemImages['apple-iphone-16-pro']['black-titanium'],
     spec: {
       "SoC":"Apple A18 Pro",
@@ -439,7 +439,7 @@ export const initialItems: TinitialItems[] = [
     groupOptions: {'COLOR': 'Black', 'STORAGE': '512 Gb'},
     stockQty: 0,
     bestSeller: false,
-    forSale: true,
+    forSale: false,
     itemImages: initialItemImages['apple-iphone-16']['black'],
     spec: {
       "Dimensions": "71.6 x 147.6 x 7.8 mm",
@@ -544,7 +544,7 @@ export const initialItems: TinitialItems[] = [
     groupOptions: {'COLOR': 'Pink', 'STORAGE': '512 Gb'},
     stockQty: 9,
     bestSeller: false,
-    forSale: true,
+    forSale: false,
     itemImages: initialItemImages['apple-iphone-16']['pink'],
     spec: {
       "Dimensions": "71.6 x 147.6 x 7.8 mm",
@@ -754,7 +754,7 @@ export const initialItems: TinitialItems[] = [
     groupOptions: {'COLOR': 'White', 'STORAGE': '128 Gb'},
     stockQty: 0,
     bestSeller: false,
-    forSale: true,
+    forSale: false,
     itemImages: initialItemImages['apple-iphone-16']['white'],
     spec: {
       "SoC": "Apple A18",

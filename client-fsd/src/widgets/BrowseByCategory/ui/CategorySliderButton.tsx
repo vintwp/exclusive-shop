@@ -1,4 +1,4 @@
-import { CarouselNext, CarouselPrevious } from '@/shared/components';
+import { CarouselNext, CarouselPrevious } from '@/shared/ui';
 import React from 'react';
 
 type Props = {

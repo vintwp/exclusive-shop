@@ -2,14 +2,20 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
   CarouselPrevious,
+  CarouselNext,
+  CarouselDots,
+  type CarouselApi,
+  type CarouselProps,
 } from './Carousel';
 
 export {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
   CarouselPrevious,
+  CarouselNext,
+  CarouselDots,
+  type CarouselApi,
+  type CarouselProps,
 };

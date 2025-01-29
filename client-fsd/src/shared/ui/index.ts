@@ -85,15 +85,6 @@ import { Separator } from './Separator';
 
 import { Toaster, useToast } from './Toaster';
 
-// eslint-disable-next-line import/no-cycle
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from './Carousel';
-
 import {
   Command,
   CommandDialog,
@@ -136,6 +127,17 @@ import {
   CardHeader,
   CardTitle,
 } from './Card';
+
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+  CarouselDots,
+  type CarouselApi,
+  type CarouselProps,
+} from './Carousel';
 
 // #endregion
 
@@ -202,11 +204,6 @@ export {
   Separator,
   Toaster,
   useToast,
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
   Command,
   CommandDialog,
   CommandEmpty,
@@ -238,4 +235,12 @@ export {
   CardFooter,
   CardHeader,
   CardTitle,
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+  CarouselDots,
+  type CarouselApi,
+  type CarouselProps,
 };

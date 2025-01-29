@@ -14,7 +14,6 @@ model Item {
   url               String @map("item_url")
   price             Int @map("item_price")
   priceDiscount     Int @map("item_price_discount")
-  ourItem           Boolean @default(false) @map("our_item")
   category          Category @relation(fields: [categoryId], references: [id]) 
   categoryId        Int @map("category_name")
   brand             Brand @relation(fields: [brandId], references: [id]) 
@@ -27,6 +26,7 @@ model Item {
   itemImageId       Int? @map("item_image_url")
   forSale           FlashSales?
   bestSeller        ItemsBestSellers?
+  itemOur           ItemsOur?
   itemSpecification ItemSpec?
   itemText          ItemText?
   wishlist          WishlistToItem[]

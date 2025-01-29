@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction } from "express";
 import { ItemService } from "../service";
 import { IRequest, IResponse } from "../types";
 import { TItemResponse, TItemResponseDB, TItemResponseWithTimer } from "../src/types/Item";
@@ -34,6 +34,7 @@ class ItemContoller {
         data: itemResponse,
       });
     } catch (error) {
+      console.log(error)
       return next(error);
     }
   }
@@ -63,17 +64,15 @@ class ItemContoller {
     res: IResponse<{ data: TItemResponse[] }>,
     next: NextFunction
   ) {
-
-    const query = req.query.query as string;
-
     try {
+      const query = req.query.query as string;
       const items = await ItemService.getBestSelling();
       const itemsResponse = createItemResponseFromServer(items);
 
       if (query) {
         const itemsByQty = +query;
 
-        const itemsResponseTrimmed = itemsResponse.slice(itemsByQty - 1);
+        const itemsResponseTrimmed = itemsResponse.slice(0, itemsByQty);
 
         return res.json({
           data: itemsResponseTrimmed,
@@ -83,6 +82,37 @@ class ItemContoller {
       return res.json({
         data: itemsResponse,
       });
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  async getOurItems(
+    req: IRequest<any>,
+    res: IResponse<{ data: TItemResponse[] }>,
+    next: NextFunction
+  ) {
+    try {
+      const query = req.query.query as string;
+      const items = await ItemService.getOurItems();
+      const itemsResponse = createItemResponseFromServer(items);
+
+      console.log(query)
+
+      if (query) {
+        const itemsByQty = +query;
+
+        const itemsResponseTrimmed = itemsResponse.slice(0, itemsByQty);
+
+        return res.json({
+          data: itemsResponseTrimmed,
+        });
+      }
+
+      return res.json({
+        data: itemsResponse,
+      })
+      
     } catch (error) {
       return next(error);
     }

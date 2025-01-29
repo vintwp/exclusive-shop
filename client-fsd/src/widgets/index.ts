@@ -7,6 +7,8 @@ import { BrowseByCategory } from './BrowseByCategory';
 import { StoresList } from './StoresList';
 import { BestSellers } from './BestSellers';
 import { FlashSales } from './FlashSales';
+import { OurItems } from './OurItems';
+import { Benefits } from './Benefits';
 
 export {
   Header,
@@ -19,4 +21,6 @@ export {
   StoresList,
   BestSellers,
   FlashSales,
+  OurItems,
+  Benefits,
 };

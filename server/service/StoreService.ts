@@ -36,8 +36,6 @@ class StoreService {
 
       return { data: req as Store, message: message.create.ok };
     } catch (error) {
-      console.log(error)
-
       throw ApiError.forbidden(message.create.error)
     }   
   }

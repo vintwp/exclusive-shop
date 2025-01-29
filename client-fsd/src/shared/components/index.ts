@@ -19,18 +19,13 @@ import {
 } from './MultipleSelector';
 import { Rating } from './Rating';
 import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselPrevious,
-  CarouselNext,
-  CarouselLandingPage,
-  CarouselContentLandingPage,
-  CarouselItemLandingPage,
-  CarouselControlButtonsLandingPage,
-} from './Carousel';
-
+  ItemsCarousel,
+  ItemsCarouselContent,
+  ItemsCarouselControl,
+  ItemsCarouselItem,
+} from './ItemsCarousel';
 import { OptionButton } from './OptionButton';
+import { PageSection } from './PageSection';
 
 export {
   AuthFormInput,
@@ -48,15 +43,11 @@ export {
   MultipleSelector,
   MultipleSelectorOption,
   createOptions,
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselPrevious,
-  CarouselNext,
-  CarouselLandingPage,
-  CarouselContentLandingPage,
-  CarouselItemLandingPage,
-  CarouselControlButtonsLandingPage,
+  ItemsCarousel,
+  ItemsCarouselContent,
+  ItemsCarouselItem,
+  ItemsCarouselControl,
   Rating,
   OptionButton,
+  PageSection,
 };

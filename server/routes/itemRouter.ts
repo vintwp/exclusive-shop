@@ -7,6 +7,7 @@ const router = Router();
 router.get('/', ItemController.getAll);
 router.get('/sales', ItemController.getFlashSales);
 router.get('/best-selling', ItemController.getBestSelling);
+router.get('/our-items', ItemController.getOurItems);
 router.get('/:id', ItemController.getById);
 
 

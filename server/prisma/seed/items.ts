@@ -1,8 +1,7 @@
 import { prisma } from "./prismaClient";
 import initialItems from "./items/index";
 import { TItemOption } from './items/types';
-import { checkImageAvailability } from "../../lib";
-
+import { checkImageAvailability, createUrl } from "../../lib";
 export async function createItems() {
   await prisma.itemImage.deleteMany();
 
@@ -17,7 +16,7 @@ export async function createItems() {
       const { id } = await prisma.item.create({
         data: {
           name: initialItem.name,
-          url: initialItem.url,
+          url: initialItem.url || createUrl(initialItem.name),
           price: initialItem.price,
           priceDiscount: initialItem.priceDiscount,
           category: {
@@ -40,9 +39,9 @@ export async function createItems() {
               images: checkImageAvailability(initialItem.itemImages)
             }
           },
-          // forSale: {
-          //   create: initialItem.forSale ? {} : undefined
-          // },
+          itemOur: {
+            create: initialItem.ourItem ? {} : undefined,
+          },
           bestSeller: {
             create: initialItem.bestSeller ? {} : undefined
           },

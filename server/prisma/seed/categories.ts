@@ -99,6 +99,16 @@ const initialCategories: TinitialCategories = [
     additionalStores: [4],
     refineOption: defaultRefineOption,
   },
+  {
+    id: 10,
+    name: 'Speakers',
+    primaryStoreId: 1,
+    displayOnMainPage: true,
+    image: 'categories/speakers.svg',
+    url: 'speakers',
+    additionalStores: [],
+    refineOption: defaultRefineOption,
+  },
 ];
 
 export async function createCategories() {

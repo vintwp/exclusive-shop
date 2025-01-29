@@ -15,19 +15,29 @@ import {
   NavigationMenuViewport,
   Container,
 } from '@/shared/ui';
+import { getBanner } from '@/entities/Banner';
+import { DOMAIN } from '@/shared/config';
+import { BannerSlider } from './BannerSlider';
 
 type Props = {};
 
 export const StoresList: React.FC<Props> = async () => {
   const stores = await getStore();
+  const banners = await getBanner();
+
+  const bannersToRender = banners.ok
+    ? banners.data.map(b => {
+        return {
+          ...b,
+          image: `${DOMAIN}/${b.image}`,
+        };
+      })
+    : null;
 
   return (
-    <Container>
+    <Container className="mb-[70px] md:mb-[140px]">
       <div className="flex flex-wrap md:flex-nowrap">
-        <div
-          className="hidden border-r-[1px] border-clr-text-2/25 pb-12 pr-2 pt-4 md:block lg:pb-32
-            lg:pr-4 lg:pt-10"
-        >
+        <div className="hidden border-r-[1px] border-clr-text-2/25 pr-2 pt-4 md:block lg:pr-4 lg:pt-10">
           {/* {stores.map(store => (
           <Link
             key={store.name}
@@ -40,15 +50,12 @@ export const StoresList: React.FC<Props> = async () => {
         ))} */}
 
           <NavigationMenu orientation="vertical">
-            <NavigationMenuList className="flex-col items-start space-x-0">
+            <NavigationMenuList className="flex-col items-start gap-4 space-x-0">
               {stores.ok &&
                 stores.data.map(store => (
-                  <NavigationMenuItem
-                    // className="[&:not(:last-child)]:mb-4"
-                    key={store.name}
-                  >
+                  <NavigationMenuItem key={store.name}>
                     <NavigationMenuTrigger
-                      className="p-0 hover:bg-transparent hover:text-clr-secondary-3
+                      className="h-auto p-0 hover:bg-transparent hover:text-clr-secondary-3
                         data-[state=open]:bg-transparent [&>svg]:hidden"
                     >
                       <Link
@@ -91,8 +98,8 @@ export const StoresList: React.FC<Props> = async () => {
               ))}
           </Accordion>
         </div>
-        <div className="flex-1 pb-12 pt-4 lg:pb-32 lg:pl-11 lg:pt-10">
-          right
+        <div className="hidden flex-1 pt-4 md:block md:min-h-80 md:pl-4 lg:pl-11 lg:pt-10">
+          {bannersToRender && <BannerSlider banner={bannersToRender} />}
         </div>
       </div>
     </Container>

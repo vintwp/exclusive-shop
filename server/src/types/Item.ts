@@ -50,13 +50,16 @@ type TItemDB = Item & {
   };
   itemImage: ItemImage;
   itemStock: {
-    stockQty: number
+    stockQty: number;
   };
   forSale: null | {
-    itemId: number
+    itemId: number;
   };
   bestSeller: null | {
-    itemId: number
+    itemId: number;
+  };
+  itemOur: null | {
+    itemId: number;
   };
   groupOptions: Array<{
     groupOption: keyof typeof ItemOptionParameter;
@@ -102,7 +105,6 @@ type TItemResponse = {
   price: number;
   priceDiscount: number;
   discount: number;
-  ourItem: boolean;
   stock: boolean;
   brandId: number;
   category: Pick<Category, 'id' | 'url'>;
@@ -115,6 +117,7 @@ type TItemResponse = {
   createdAt: Date;
   forSale?: boolean;
   bestSeller?: boolean;
+  ourItem?: boolean;
   review?: TItemReviewResponse;
 };
 

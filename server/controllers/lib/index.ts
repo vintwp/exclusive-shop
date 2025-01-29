@@ -43,7 +43,6 @@ function createItemResponseFromServer<T extends TItemResponseDB>(data: T) {
       price: item.price,
       priceDiscount: item.priceDiscount,
       discount: discount,
-      ourItem: item.ourItem,
       stock: item.itemStock.stockQty > 0,
       category: {
         ...item.category
@@ -56,6 +55,7 @@ function createItemResponseFromServer<T extends TItemResponseDB>(data: T) {
       itemGroupOptions: item.itemGroupOptions,
       forSale: item.forSale ? true : false,
       bestSeller: item.bestSeller ? true : false,
+      itemOur: item.itemOur ? true : false,
       review: item.review,
       isNew: isNew,
       createdAt: item.createdAt,

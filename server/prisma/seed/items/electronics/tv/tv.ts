@@ -161,7 +161,7 @@ export const initialItems: TinitialItems[] = [
     groupKey: intialItemGroups['samsung-qled-neo'].groupName,
     groupOptions: {'SIZE': '43"'},
     stockQty: 10,
-    bestSeller: true,
+    bestSeller: false,
     forSale: false,
     itemImages: Array.isArray(initialItemImages['samsung-qled-neo']) && initialItemImages['samsung-qled-neo'],
     spec: {

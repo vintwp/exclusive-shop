@@ -1,45 +1,24 @@
 import { cn } from '@/shared/lib';
 import React from 'react';
 
-type UpperTitleProps = {
-  title: string;
+type PageSectionProps = {
   className?: string;
+  children: React.ReactNode;
 };
 
-export const PageSectionUpperTitle: React.FC<UpperTitleProps> = ({
-  title,
-  className,
-}) => {
-  return (
-    <h3
-      className={cn(
-        `relative mb-5 flex items-center gap-4 text-sm font-semibold text-clr-secondary-3
-        before:h-6 before:w-3 before:rounded-md before:bg-clr-secondary-3
-        before:content-[''] md:text-base lg:before:h-10 lg:before:w-5`,
-        className,
-      )}
-    >
-      {title}
-    </h3>
-  );
+const PageSection = ({ className, children }: PageSectionProps) => {
+  return <div className={cn('py-8 lg:py-16', className)}>{children}</div>;
 };
 
-type PrimaryTitleProps = UpperTitleProps & {
-  className?: string;
-  children?: React.ReactNode;
-};
-
-export const PageSectionPrimaryTitle: React.FC<PrimaryTitleProps> = ({
-  title,
+const PageSectionPrimaryTitle = ({
   className,
   children,
-}) => {
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>): React.JSX.Element => {
   return (
     <div
-      className={cn(
-        'mb-8 flex items-center justify-between md:mb-10 lg:mb-14',
-        className,
-      )}
+      className={cn('flex items-center justify-between', className)}
+      {...props}
     >
       <h2
         className={cn(
@@ -47,18 +26,69 @@ export const PageSectionPrimaryTitle: React.FC<PrimaryTitleProps> = ({
           className,
         )}
       >
-        {title}
+        {children}
       </h2>
+    </div>
+  );
+};
+
+PageSection.PrimaryTitle = PageSectionPrimaryTitle;
+
+const PageSectionUpperTitle = ({
+  className,
+  children,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => {
+  return (
+    <h3
+      className={cn(
+        `relative flex items-center gap-4 text-sm font-semibold text-clr-secondary-3
+        before:h-6 before:w-3 before:rounded-md before:bg-clr-secondary-3
+        before:content-[''] md:text-base lg:before:h-10 lg:before:w-5`,
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </h3>
+  );
+};
+
+PageSection.UpperTitle = PageSectionUpperTitle;
+
+const PageSectionTitles = ({
+  className,
+  children,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn('flex flex-col gap-3 md:gap-6', className)}
+    {...props}
+  >
+    {children}
+  </div>
+);
+
+PageSection.Titles = PageSectionTitles;
+
+const PageSectionHeader = ({
+  className,
+  children,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => {
+  return (
+    <div
+      className={cn(
+        'mb-8 flex items-end md:mb-10 lg:mb-14 lg:leading-none',
+        className,
+      )}
+      {...props}
+    >
       {children}
     </div>
   );
 };
 
-type Props = {
-  className?: string;
-  children: React.ReactNode;
-};
+PageSection.Header = PageSectionHeader;
 
-export const PageSection: React.FC<Props> = ({ className, children }) => {
-  return <div className={cn('py-8 lg:py-16', className)}>{children}</div>;
-};
+export { PageSection };

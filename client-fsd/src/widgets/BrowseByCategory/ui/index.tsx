@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  PageSectionUpperTitle,
-  PageSectionPrimaryTitle,
-  PageSection,
-} from '@/shared/components/PageSection/PageSection';
+import { PageSection } from '@/shared/components/PageSection/PageSection';
 import { getCategory } from '@/entities/Category';
 import { Container } from '@/shared/ui';
 import { CategorySlider } from './CategorySlider';
@@ -16,8 +12,14 @@ export const BrowseByCategory: React.FC<Props> = async () => {
   return (
     <Container>
       <PageSection className="border-b-[1px] border-t-[1px]">
-        <PageSectionUpperTitle title="Categories" />
-        <PageSectionPrimaryTitle title="Browse By Category" />
+        <PageSection.Header>
+          <PageSection.Titles>
+            <PageSection.UpperTitle>Categories</PageSection.UpperTitle>
+            <PageSection.PrimaryTitle>
+              Browse By Category
+            </PageSection.PrimaryTitle>
+          </PageSection.Titles>
+        </PageSection.Header>
         <CategorySlider categories={categories.ok ? categories.data : []} />
       </PageSection>
     </Container>
