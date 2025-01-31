@@ -6,7 +6,7 @@ import deviceRouter from './deviceRouter';
 import storeRouter from './storeRouter';
 import searchRouter from './searchRouter';
 import itemRouter from './itemRouter';
-import bannerRouter from './bannerRouter';
+import promoRouter from './promoRouter';
 
 const router = Router();
 
@@ -17,6 +17,6 @@ router.use('/brand', brandRouter);
 router.use('/device', deviceRouter);
 router.use('/search', searchRouter);
 router.use('/item', itemRouter);
-router.use('/banner', bannerRouter);
+router.use('/promo', promoRouter);
 
 export default router;

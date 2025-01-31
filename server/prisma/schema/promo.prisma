@@ -1,0 +1,32 @@
+model Banner {
+  id          Int   @id @default(autoincrement())
+  image       String
+  url         String
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+
+  @@map("banner")
+}
+
+model PromoCategory {
+  id        Int   @id @default(autoincrement())
+  url      String
+  text      String
+  image     String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("promo_category")
+}
+
+model PromoNewArrival {
+  id        Int   @id @default(autoincrement())
+  url      String
+  title     String
+  text      String
+  image     String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("promo_new_arrival")
+}

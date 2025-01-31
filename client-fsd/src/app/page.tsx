@@ -5,6 +5,7 @@ import {
   FlashSales,
   OurItems,
   Benefits,
+  PromoNewArrival,
 } from '@/widgets';
 import { PromoCategory } from '@/widgets/PromoCategory';
 
@@ -17,6 +18,7 @@ export default async function Home() {
       <BestSellers />
       <PromoCategory />
       <OurItems />
+      <PromoNewArrival />
       <Benefits />
     </>
   );

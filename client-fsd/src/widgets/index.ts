@@ -9,6 +9,7 @@ import { BestSellers } from './BestSellers';
 import { FlashSales } from './FlashSales';
 import { OurItems } from './OurItems';
 import { Benefits } from './Benefits';
+import { PromoNewArrival } from './PromoNewArrival';
 
 export {
   Header,
@@ -23,4 +24,5 @@ export {
   FlashSales,
   OurItems,
   Benefits,
+  PromoNewArrival,
 };

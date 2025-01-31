@@ -15,15 +15,15 @@ import {
   NavigationMenuViewport,
   Container,
 } from '@/shared/ui';
-import { getBanner } from '@/entities/Banner';
 import { DOMAIN } from '@/shared/config';
+import { getPromoBanner } from '@/entities/Promo';
 import { BannerSlider } from './BannerSlider';
 
 type Props = {};
 
 export const StoresList: React.FC<Props> = async () => {
   const stores = await getStore();
-  const banners = await getBanner();
+  const banners = await getPromoBanner();
 
   const bannersToRender = banners.ok
     ? banners.data.map(b => {
@@ -38,17 +38,6 @@ export const StoresList: React.FC<Props> = async () => {
     <Container className="mb-[70px] md:mb-[140px]">
       <div className="flex flex-wrap md:flex-nowrap">
         <div className="hidden border-r-[1px] border-clr-text-2/25 pr-2 pt-4 md:block lg:pr-4 lg:pt-10">
-          {/* {stores.map(store => (
-          <Link
-            key={store.name}
-            className="block capitalize transition-colors hover:text-clr-secondary-3
-              [&:not(:last-child)]:mb-4"
-            href={`${store.url}`}
-          >
-            {store.name}
-          </Link>
-        ))} */}
-
           <NavigationMenu orientation="vertical">
             <NavigationMenuList className="flex-col items-start gap-4 space-x-0">
               {stores.ok &&
@@ -76,7 +65,7 @@ export const StoresList: React.FC<Props> = async () => {
             </NavigationMenuList>
             <NavigationMenuViewport
               classNameWrapper="left-[calc(100%+3.5rem)] top-0 "
-              className="min-w-max md:min-h-48 md:min-w-60"
+              className="min-w-max md:min-h-60 md:min-w-80"
             />
           </NavigationMenu>
         </div>

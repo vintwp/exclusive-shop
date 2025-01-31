@@ -1,16 +1,16 @@
 import axios from '@/shared/api/axios';
 import { ApiError, ResponseApi } from '@/shared/models';
 import { PROMO_BANNER_API } from '@/shared/config';
-import { TBanner } from '../model';
+import { TPromoBanner } from '../model';
 
-const getBanner = async () => {
+const getPromoBanner = async () => {
   try {
-    const banner = await axios.getData<TBanner[]>(PROMO_BANNER_API);
+    const banner = await axios.getData<TPromoBanner[]>(PROMO_BANNER_API);
 
     return {
       ok: true,
       data: banner,
-    } as ResponseApi<TBanner[]>;
+    } as ResponseApi<TPromoBanner[]>;
   } catch (err) {
     const error = err as ApiError;
 
@@ -21,4 +21,4 @@ const getBanner = async () => {
   }
 };
 
-export { getBanner };
+export { getPromoBanner };

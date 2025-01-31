@@ -20,6 +20,10 @@ export async function createFlashSales() {
   await prisma.flashSales.deleteMany();
   const { itemIds, deadline, timer } = initialFlashSalesItems;
 
+  await prisma.timer.deleteMany({
+    where: {},
+  })
+
   for (const itemId of itemIds) {
     const item = await prisma.item.findUnique({
       where: {

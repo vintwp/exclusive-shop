@@ -23,6 +23,8 @@ export const ITEM_API = getEnvVar('ITEM_API');
 export const ITEM_SALES = getEnvVar('ITEM_SALES');
 export const ITEM_BEST_SELLING = getEnvVar('ITEM_BEST_SELLING');
 export const ITEM_OUR = getEnvVar('ITEM_OUR');
-export const BANNER_API = getEnvVar('BANNER_API');
+export const PROMO_BANNER_API = getEnvVar('PROMO_BANNER_API');
+export const PROMO_CATEGORY_API = getEnvVar('PROMO_CATEGORY_API');
+export const PROMO_NEW_ARRIVAL_API = getEnvVar('PROMO_NEW_ARRIVAL_API');
 
 export const ALL_USERS = getEnvVar('USER_GETALL');

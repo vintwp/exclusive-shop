@@ -4,7 +4,7 @@ import UserService from "./UserService";
 import StoreService from "./StoreService";
 import SearchService from "./SearchService";
 import ItemService from "./ItemService";
-import BannerService from "./BannerService";
+import PromoService from "./PromoService";
 
 export {
   UserService,
@@ -13,5 +13,5 @@ export {
   CategoryService,
   SearchService,
   ItemService,
-  BannerService
+  PromoService
 };

@@ -6,7 +6,11 @@ import { createItems } from "./seed/items";
 import { createColors } from './seed/colors';
 import { createReviews } from "./seed/reviews";
 import { createFlashSales } from "./seed/flashSales";
-import { createBanner } from "./seed/banner";
+import {
+  createPromoBanner,
+  createPromoCategoryBanner,
+  createPromoNewArrival,
+} from "./seed/promo";
 
 const seed = async () => {
   await createUsers();
@@ -17,7 +21,9 @@ const seed = async () => {
   await createItems();
   await createReviews();
   await createFlashSales();
-  await createBanner();
+  await createPromoBanner();
+  await createPromoCategoryBanner();
+  await createPromoNewArrival();
 }
 
 seed();

@@ -97,8 +97,6 @@ class ItemContoller {
       const items = await ItemService.getOurItems();
       const itemsResponse = createItemResponseFromServer(items);
 
-      console.log(query)
-
       if (query) {
         const itemsByQty = +query;
 
