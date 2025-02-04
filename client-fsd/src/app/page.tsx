@@ -19,7 +19,9 @@ export default async function Home() {
       <PromoCategory />
       <OurItems />
       <PromoNewArrival />
-      <Benefits />
+      <div className="mb-8 lg:mb-16">
+        <Benefits />
+      </div>
     </>
   );
 }

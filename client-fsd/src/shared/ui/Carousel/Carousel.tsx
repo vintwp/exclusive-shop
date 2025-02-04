@@ -306,7 +306,7 @@ const CarouselDots = React.forwardRef<
           variant="outline"
           className={cn(
             'relative h-3 min-h-0 w-3 rounded-full p-0',
-            `border-white/50 bg-white/50 after:absolute after:block after:h-2 after:w-2
+            `border-black/10 bg-black/10 after:absolute after:block after:h-2 after:w-2
             after:rounded-full after:content-[""]`,
             currentSlide === i && 'bg-white after:bg-clr-secondary-3',
           )}

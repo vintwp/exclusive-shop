@@ -13,24 +13,22 @@ export const FlashSales: React.FC<Props> = async () => {
   const timerEnds = flashSalesItems.ok ? flashSalesItems.data.timerEnds : '';
 
   return (
-    <Container type="fluid">
-      <div
-        className="overflow-hidden px-4 sm:pr-0
-          [@media(min-width:1202px)]:pl-[calc((100%-1202px)/2+1rem)]"
-      >
-        <PageSection className="pt-0 lg:pt-0">
-          <PageSection.Header className="flex flex-wrap gap-4 [@media(min-width:468px)]:flex-nowrap">
-            <PageSection.Titles className="flex-[1_1_100%] [@media(min-width:468px)]:flex-[0_1_auto]">
-              <PageSection.UpperTitle>Today&apos;s</PageSection.UpperTitle>
-              <PageSection.PrimaryTitle className="leading-none">
-                Flash sales
-              </PageSection.PrimaryTitle>
-            </PageSection.Titles>
-            <Timer timerEnds={timerEnds} />
-          </PageSection.Header>
-          <FlashSalesCarousel items={itemsToRender} />
-        </PageSection>
-      </div>
+    <Container
+      type="fluid"
+      align="left"
+    >
+      <PageSection className="pt-0 lg:pt-0">
+        <PageSection.Header className="flex flex-wrap gap-4 [@media(min-width:468px)]:flex-nowrap">
+          <PageSection.Titles className="flex-[1_1_100%] [@media(min-width:468px)]:flex-[0_1_auto]">
+            <PageSection.UpperTitle>Today&apos;s</PageSection.UpperTitle>
+            <PageSection.PrimaryTitle className="leading-none">
+              Flash sales
+            </PageSection.PrimaryTitle>
+          </PageSection.Titles>
+          <Timer timerEnds={timerEnds} />
+        </PageSection.Header>
+        <FlashSalesCarousel items={itemsToRender} />
+      </PageSection>
     </Container>
   );
 };

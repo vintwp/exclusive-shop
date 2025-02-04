@@ -26,6 +26,7 @@ import {
 } from './ItemsCarousel';
 import { OptionButton } from './OptionButton';
 import { PageSection } from './PageSection';
+import { BenefitCard } from './BenefitItem';
 
 export {
   AuthFormInput,
@@ -50,4 +51,5 @@ export {
   Rating,
   OptionButton,
   PageSection,
+  BenefitCard,
 };

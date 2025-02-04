@@ -10,6 +10,7 @@ import { FlashSales } from './FlashSales';
 import { OurItems } from './OurItems';
 import { Benefits } from './Benefits';
 import { PromoNewArrival } from './PromoNewArrival';
+import { AboutHero, AboutBenefits, AboutCarts } from './About';
 
 export {
   Header,
@@ -25,4 +26,7 @@ export {
   OurItems,
   Benefits,
   PromoNewArrival,
+  AboutHero,
+  AboutBenefits,
+  AboutCarts,
 };
