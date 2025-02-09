@@ -26,5 +26,6 @@ export const ITEM_OUR = getEnvVar('ITEM_OUR');
 export const PROMO_BANNER_API = getEnvVar('PROMO_BANNER_API');
 export const PROMO_CATEGORY_API = getEnvVar('PROMO_CATEGORY_API');
 export const PROMO_NEW_ARRIVAL_API = getEnvVar('PROMO_NEW_ARRIVAL_API');
+export const CONTACT_MESSAGE_API = getEnvVar('CONTACT_MESSAGE_API');
 
 export const ALL_USERS = getEnvVar('USER_GETALL');

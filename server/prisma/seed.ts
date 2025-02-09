@@ -11,6 +11,7 @@ import {
   createPromoCategoryBanner,
   createPromoNewArrival,
 } from "./seed/promo";
+import { createContacatMessages } from "./seed/contactMessages";
 
 const seed = async () => {
   await createUsers();
@@ -24,6 +25,7 @@ const seed = async () => {
   await createPromoBanner();
   await createPromoCategoryBanner();
   await createPromoNewArrival();
+  await createContacatMessages();
 }
 
 seed();

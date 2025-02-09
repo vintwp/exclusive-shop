@@ -6,6 +6,7 @@ import StoreController from "./StoreController";
 import SearchController from "./SearchController";
 import ItemController from "./ItemController";
 import PromoController from "./PromoController";
+import ContactController from './ContactController';
 
 export {
   UserController,
@@ -15,5 +16,6 @@ export {
   DeviceController,
   SearchController,
   ItemController,
-  PromoController
+  PromoController,
+  ContactController
 };

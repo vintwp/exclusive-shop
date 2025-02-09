@@ -139,6 +139,8 @@ import {
   type CarouselProps,
 } from './Carousel';
 
+import { Textarea } from './Textarea';
+
 // #endregion
 
 export {
@@ -243,4 +245,5 @@ export {
   CarouselDots,
   type CarouselApi,
   type CarouselProps,
+  Textarea,
 };

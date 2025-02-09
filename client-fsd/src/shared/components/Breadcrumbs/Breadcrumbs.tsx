@@ -36,7 +36,7 @@ export const Breadcrumbs: React.FC<Props> = ({
                   isActive && 'text-black',
                 )}
               >
-                <Link href={href}>{link}</Link>
+                <Link href={href}>{link.replaceAll('-', ' ')}</Link>
               </li>
               {pathNames.length !== index + 1 && separator}
             </React.Fragment>

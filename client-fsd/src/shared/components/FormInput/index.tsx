@@ -63,7 +63,7 @@ export const FormInput: React.FC<Props> = ({
   }, [value]);
 
   return (
-    <label>
+    <label className="w-full">
       {label && <p className="mb-2 text-sm font-semibold">{label}</p>}
       <Input
         {...props}

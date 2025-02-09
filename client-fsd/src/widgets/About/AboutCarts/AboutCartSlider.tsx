@@ -19,9 +19,17 @@ const cards = [
     linkedin: 'https://www.linkedin.com/antony-hopkins',
   },
   {
+    image: '/about/sylvester-stallone.webp',
+    name: 'Sylvester Stallone',
+    position: 'Co-Founder & CEO',
+    twitter: 'https://www.twitter.com/sylvester-stallone',
+    instagramm: 'https://www.instagramm.com/sylvester-stallone',
+    linkedin: 'https://www.linkedin.com/sylvester-stallone',
+  },
+  {
     image: '/about/charlize-theron.webp',
     name: 'Charlize Theron',
-    position: 'Managing Director',
+    position: 'General Manager',
     twitter: 'https://www.twitter.com/charlize-theron',
     instagramm: 'https://www.instagramm.com/charlize-theron',
     linkedin: 'https://www.linkedin.com/charlize-theron',
@@ -29,7 +37,7 @@ const cards = [
   {
     image: '/about/wesley-snipes.webp',
     name: 'Wesley Snipes',
-    position: 'Managing Director',
+    position: 'Financial Manager',
     twitter: 'https://www.twitter.com/wesley-snipes',
     instagramm: 'https://www.instagramm.com/wesley-snipes',
     linkedin: 'https://www.linkedin.com/wesley-snipes',
@@ -45,10 +53,18 @@ const cards = [
   {
     image: '/about/tom-cruise.webp',
     name: 'Tom Cruise',
-    position: 'Product Designer',
+    position: 'Marketing Manager',
     twitter: 'https://www.twitter.com/tom-cruise',
     instagramm: 'https://www.instagramm.com/tom-cruise',
     linkedin: 'https://www.linkedin.com/tom-cruise',
+  },
+  {
+    image: '/about/jackie-chan.webp',
+    name: 'Jackie Chan',
+    position: 'Operation Manager',
+    twitter: 'https://www.twitter.com/jackie-chan',
+    instagramm: 'https://www.instagramm.com/jackie-chan',
+    linkedin: 'https://www.linkedin.com/jackie-chan',
   },
 ];
 

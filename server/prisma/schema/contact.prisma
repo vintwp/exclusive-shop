@@ -1,0 +1,11 @@
+model ContactMessage {
+  id                Int   @id @default(autoincrement())
+  name              String @map("messages_name")
+  email             String @map("messages_email")
+  phone             String @map("messages_phone")
+  message           String @map("messages_message")
+  answered          Boolean
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  @@map("contact_message")
+}

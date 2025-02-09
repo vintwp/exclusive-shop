@@ -1,4 +1,4 @@
-import { Timer, TimerTypes } from "@prisma/client";
+import { TimerTypes } from "@prisma/client";
 import { prisma } from "./prismaClient";
 
 const DISCOUNT = 20;  // in percent

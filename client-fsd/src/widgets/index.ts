@@ -11,6 +11,7 @@ import { OurItems } from './OurItems';
 import { Benefits } from './Benefits';
 import { PromoNewArrival } from './PromoNewArrival';
 import { AboutHero, AboutBenefits, AboutCarts } from './About';
+import { ContactInfo, ContactForm } from './Contact';
 
 export {
   Header,
@@ -29,4 +30,6 @@ export {
   AboutHero,
   AboutBenefits,
   AboutCarts,
+  ContactInfo,
+  ContactForm,
 };
